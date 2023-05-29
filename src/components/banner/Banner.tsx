@@ -10,7 +10,7 @@ const Banner = () => {
     <Box marginX={4} paddingY={4} userSelect="none" marginTop={"8.3rem"}>
       <Swiper
         modules={[Pagination]}
-        spaceBetween={50}
+        spaceBetween={10}
         slidesPerView={1}
         pagination={{ clickable: true }}
       >
