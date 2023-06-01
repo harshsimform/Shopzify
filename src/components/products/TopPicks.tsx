@@ -1,9 +1,13 @@
 import { Box, Button, Flex, Text, useColorModeValue } from "@chakra-ui/react";
-import { TopPicksProductsData } from "../../constants/TopPicksProductsData";
 import { Swiper, SwiperSlide, useSwiper } from "swiper/react";
 import { sliderSettings } from "../../utils/sliderSettings";
 import { FiChevronRight, FiChevronLeft } from "react-icons/fi";
 import "swiper/css";
+import axios from "axios";
+import { useEffect, useState } from "react";
+import { ProductFormValues } from "../../interfaces/interface";
+
+const environment = import.meta.env;
 
 const SliderButtons = () => {
   const swiper = useSwiper();
@@ -18,12 +22,27 @@ const SliderButtons = () => {
     </Flex>
   );
 };
-
 const TopPicks = () => {
   const cardBorderColor = useColorModeValue("gray.200", "gray.600");
   const cardBgColor = useColorModeValue("white", "gray.700");
   const priceTextColor = useColorModeValue("gray.600", "gray.400");
   const dummyPriceTextColor = useColorModeValue("gray.400", "gray.500");
+
+  const [productData, setProductData] = useState<ProductFormValues[]>([]);
+  const fetchProductData = async () => {
+    try {
+      const response = await axios.get(environment.API_BASE_URL);
+      setProductData(response.data.productDetails);
+      console.log(response.data.productDetails);
+    } catch (error) {
+      console.error("Error fetching product data:", error);
+    }
+  };
+
+  useEffect(() => {
+    fetchProductData();
+  }, []);
+
   return (
     <>
       <Box marginX={4} position="relative">
@@ -45,10 +64,10 @@ const TopPicks = () => {
         <center>
           <Swiper {...sliderSettings}>
             <SliderButtons />
-            {TopPicksProductsData.map((obj, i) => (
+            {productData.map((obj, i) => (
               <SwiperSlide key={i}>
                 <Box
-                  key={obj.id}
+                  key={obj._id}
                   className="relative max-w-md shadow-md rounded-3xl p-2 my-[4rem] cursor-pointer"
                   border={1}
                   borderStyle="solid"
@@ -61,7 +80,7 @@ const TopPicks = () => {
                   >
                     <img
                       className="h-[15rem] rounded-2xl w-full object-cover"
-                      src={obj.productImage}
+                      src={obj.image}
                     />
                     <p className="absolute right-2 top-2 bg-white rounded-full p-2 cursor-pointer group">
                       <svg
@@ -86,20 +105,20 @@ const TopPicks = () => {
                         className="text-lg font-semibold text-teal-500 mb-0 text-left"
                         style={{ userSelect: "none" }}
                       >
-                        {obj.productName}
+                        {obj.name}
                       </p>
                       <div
                         className="flex items-center"
                         style={{ userSelect: "none" }}
                       >
                         <Text className="text-lg mt-0" color={priceTextColor}>
-                          Rs. {Number(obj.productPrice).toLocaleString()}
+                          Rs. {Number(obj.discountedPrice).toLocaleString()}
                         </Text>
                         <Text
                           className="text-md mt-0 ml-2 line-through"
                           color={dummyPriceTextColor}
                         >
-                          Rs. {Number(obj.productDummyPrice).toLocaleString()}
+                          Rs. {Number(obj.originalPrice).toLocaleString()}
                         </Text>
                       </div>
                     </div>

@@ -2,7 +2,7 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay } from "swiper";
 import { Image, Box } from "@chakra-ui/react";
 import "swiper/css";
-import { bannerData } from "../../constants/BannerData";
+import { BannerData } from "../../constants/BannerData";
 
 const Banner = () => {
   return (
@@ -14,7 +14,7 @@ const Banner = () => {
         autoplay={{ delay: 5000, disableOnInteraction: false }}
         loop={true}
       >
-        {bannerData.map((data) => (
+        {BannerData.map((data) => (
           <SwiperSlide key={data.id}>
             <Image
               src={data.bannerImg}
