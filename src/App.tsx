@@ -1,20 +1,33 @@
+import { lazy, Suspense } from "react";
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import "./App.css";
-import Banner from "./components/banner/Banner";
-import Navbar from "./components/navbar/Navbar";
-import FlashSale from "./components/products/FlashSale";
-import TopPicks from "./components/products/TopPicks";
-import TrendingNow from "./components/products/TrendingNow";
 
-function App() {
+const LazyRoot = lazy(() => import("./components/pages/Root"));
+const LazyHome = lazy(() => import("./components/pages/Home"));
+
+const router = createBrowserRouter([
+  {
+    path: "/",
+    element: <LazyRoot />,
+    children: [
+      {
+        path: "/",
+        element: (
+          <Suspense fallback={<div>Loading...</div>}>
+            <LazyHome />
+          </Suspense>
+        ),
+      },
+    ],
+  },
+]);
+
+const App = () => {
   return (
     <>
-      <Navbar />
-      <Banner />
-      <TopPicks />
-      <FlashSale />
-      <TrendingNow />
+      <RouterProvider router={router} />
     </>
   );
-}
+};
 
 export default App;

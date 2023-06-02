@@ -1,18 +1,18 @@
 import { Box, Button, Flex, Text, useColorModeValue } from "@chakra-ui/react";
 import { Swiper, SwiperSlide, useSwiper } from "swiper/react";
-import { sliderSettings } from "../../utils/sliderSettings";
+import { sliderSettings } from "../../../utils/sliderSettings";
 import { FiChevronRight, FiChevronLeft } from "react-icons/fi";
 import "swiper/css";
-import axios from "axios";
 import { useEffect, useState } from "react";
-import { ProductFormValues } from "../../interfaces/interface";
-
-const environment = import.meta.env;
+import { ProductFormValues } from "../../../interfaces/interface";
+import { motion } from "framer-motion";
+import { useGetProductDataQuery } from "../../../redux/apiSlice";
+import TextTransition from "./TextTransition";
 
 const SliderButtons = () => {
   const swiper = useSwiper();
   return (
-    <Flex position="absolute" top="2" right="0" zIndex={1}>
+    <Flex position="absolute" top="5" right="0" zIndex={1}>
       <Button onClick={() => swiper.slidePrev()}>
         <FiChevronLeft />
       </Button>
@@ -22,53 +22,38 @@ const SliderButtons = () => {
     </Flex>
   );
 };
-const TopPicks = () => {
+const TrendingNow = () => {
   const cardBorderColor = useColorModeValue("gray.200", "gray.600");
   const cardBgColor = useColorModeValue("white", "gray.700");
   const priceTextColor = useColorModeValue("gray.600", "gray.400");
   const dummyPriceTextColor = useColorModeValue("gray.400", "gray.500");
 
-  const [productData, setProductData] = useState<ProductFormValues[]>([]);
-  const fetchProductData = async () => {
-    try {
-      const response = await axios.get(environment.API_BASE_URL);
-      setProductData(response.data.productDetails);
-      console.log(response.data.productDetails);
-    } catch (error) {
-      console.error("Error fetching product data:", error);
-    }
-  };
+  const { data, isLoading, isError } = useGetProductDataQuery();
 
-  useEffect(() => {
-    fetchProductData();
-  }, []);
+  const TopPicksProducts = data?.productDetails.filter(
+    (product) => product.displaySection === "trending now"
+  );
+
+  if (isLoading) {
+    return <Box marginX={4}>Loading...</Box>;
+  }
+
+  if (isError) {
+    return <Box marginX={4}>Error fetching products</Box>;
+  }
 
   return (
     <>
       <Box marginX={4} position="relative">
-        <Box
-          fontSize={25}
-          fontWeight={600}
-          color="teal.400"
-          justifyContent="space-between"
-          position="absolute"
-          top={2}
-          left={1}
-          right={0}
-          zIndex={2}
-          pointerEvents="none"
-          userSelect="none"
-        >
-          <Text>Top Picks</Text>
-        </Box>
+        <TextTransition text="TRENDING NOW" />
         <center>
           <Swiper {...sliderSettings}>
             <SliderButtons />
-            {productData.map((obj, i) => (
-              <SwiperSlide key={i}>
+            {TopPicksProducts?.map((obj: ProductFormValues) => (
+              <SwiperSlide key={obj._id}>
                 <Box
                   key={obj._id}
-                  className="relative max-w-md shadow-md rounded-3xl p-2 my-[4rem] cursor-pointer"
+                  className="relative max-w-md rounded-3xl p-2 mt-[5rem] cursor-pointer"
                   border={1}
                   borderStyle="solid"
                   bgColor={cardBgColor}
@@ -149,4 +134,4 @@ const TopPicks = () => {
   );
 };
 
-export default TopPicks;
+export default TrendingNow;
