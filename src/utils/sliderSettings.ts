@@ -20,5 +20,14 @@ export const sliderSettings = {
 		1940: {
 			slidesPerView: 6,
 		},
+		2100: {
+			slidesPerView: 7,
+		},
+		2350: {
+			slidesPerView: 8,
+		},
+		2550: {
+			slidesPerView: 9,
+		},
 	},
 };

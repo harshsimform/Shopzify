@@ -1,25 +1,7 @@
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import { ProductFormValues } from "../interfaces/interface";
-import { store } from "./store";
+import { ProductResponse } from "../interfaces/interface";
 
 const environment = import.meta.env;
-
-interface ProductResponse {
-  productDetails: ProductFormValues[];
-}
-
-const productsSlice = createSlice({
-  name: "products",
-  initialState: [] as ProductFormValues[],
-  reducers: {
-    setProducts: (state, action: PayloadAction<ProductFormValues[]>) => {
-      return action.payload;
-    },
-  },
-});
-
-export const { setProducts } = productsSlice.actions;
 
 export const getProductsApi = createApi({
   reducerPath: "getProductsApi",
@@ -34,7 +16,3 @@ export const getProductsApi = createApi({
 });
 
 export const { useGetProductDataQuery } = getProductsApi;
-
-// getProductsApi.endpoints.getProductData.initiate(undefined).then((data) => {
-//   store.dispatch(setProducts(data));
-// });
