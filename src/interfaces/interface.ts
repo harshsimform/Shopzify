@@ -26,3 +26,16 @@ export interface ProductFormValues {
 export interface ProductResponse {
   productDetails: ProductFormValues[];
 }
+
+export interface UserRegAuthFormValues {
+  name: string;
+  email: string;
+  phone: string;
+  password: string;
+  confirmPassword?: string;
+}
+
+export type UserLoginAuthFormValues = Pick<
+  UserRegAuthFormValues,
+  "email" | "password"
+>;

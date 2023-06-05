@@ -103,7 +103,7 @@ const FlashSale = () => {
   return (
     <>
       <Box marginX={4} position="relative">
-        <TextTransition text="TOP PICKS" />
+        <TextTransition text="FLASH SALE" />
         <center>
           <Swiper {...sliderSettings}>
             <SliderButtons />
