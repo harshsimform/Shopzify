@@ -1,5 +1,5 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import { ProductResponse } from "../interfaces/interface";
+import { ProductResponse } from "../../interfaces/interface";
 
 const environment = import.meta.env;
 

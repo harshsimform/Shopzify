@@ -13,6 +13,9 @@ import {
 import { UserRegAuthFormValues } from "../../../interfaces/interface";
 import { NavLink } from "react-router-dom";
 import { AiFillShop } from "react-icons/ai";
+import axios from "axios";
+
+const environment = import.meta.env;
 
 const Signup = () => {
   const toast = useToast();
@@ -51,14 +54,27 @@ const Signup = () => {
     values: UserRegAuthFormValues,
     onSubmitProps: FormikHelpers<UserRegAuthFormValues>
   ) => {
-    onSubmitProps.resetForm();
-    console.log(values);
-    toast({
-      title: "You have successfully logged in",
-      position: "top",
-      status: "success",
-      isClosable: true,
-    });
+    const { confirmPassword, ...userCredentials } = values;
+    try {
+      await axios.post("http://localhost:3000/auth/signup", userCredentials);
+      console.log(userCredentials);
+
+      onSubmitProps.resetForm();
+      toast({
+        title: "You have successfully registered",
+        position: "top",
+        status: "success",
+        isClosable: true,
+      });
+    } catch (error) {
+      console.error(error);
+      toast({
+        title: "oops, please try again!",
+        position: "top",
+        status: "error",
+        isClosable: true,
+      });
+    }
   };
 
   return (

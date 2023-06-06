@@ -17,6 +17,7 @@ import { AiFillShop } from "react-icons/ai";
 import ColorMode from "../../colorMode/ColorMode";
 import SecondaryNavbar from "../secondaryNavbar/SecondaryNavbar";
 import { NavLink } from "react-router-dom";
+import Logout from "../pages/authentication/Logout";
 
 const Navbar = () => {
   const { isOpen, onToggle } = useDisclosure();
@@ -96,6 +97,7 @@ const Navbar = () => {
               Sign Up
             </Button>
           </NavLink>
+          <Logout />
         </Stack>
       </Flex>
 

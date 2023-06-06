@@ -39,3 +39,7 @@ export type UserLoginAuthFormValues = Pick<
   UserRegAuthFormValues,
   "email" | "password"
 >;
+
+export interface AuthState {
+  isLoggedIn: boolean;
+}

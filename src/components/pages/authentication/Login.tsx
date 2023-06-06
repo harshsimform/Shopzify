@@ -12,11 +12,15 @@ import {
 import { UserLoginAuthFormValues } from "../../../interfaces/interface";
 import { NavLink } from "react-router-dom";
 import { AiFillShop } from "react-icons/ai";
+import axios from "axios";
+import { useAppDispatch } from "../../../redux/store";
+import { isLoggedIn } from "../../../redux/authSliceRedux/authSlice";
 
 const Login = () => {
   const toast = useToast();
   const submitMenuBgColor = useColorModeValue("teal.400", "teal.600");
   const resetMenuBgColor = useColorModeValue("red.400", "red.600");
+  const dispatch = useAppDispatch();
 
   const initialValue: UserLoginAuthFormValues = {
     email: "",
@@ -36,14 +40,26 @@ const Login = () => {
     values: UserLoginAuthFormValues,
     onSubmitProps: FormikHelpers<UserLoginAuthFormValues>
   ) => {
-    onSubmitProps.resetForm();
-    console.log(values);
-    toast({
-      title: "You have successfully signed in",
-      position: "top",
-      status: "success",
-      isClosable: true,
-    });
+    try {
+      await axios.post("http://localhost:3000/auth/login", values);
+      console.log(values);
+      onSubmitProps.resetForm();
+      dispatch(isLoggedIn());
+      toast({
+        title: "You have successfully logged in",
+        position: "top",
+        status: "success",
+        isClosable: true,
+      });
+    } catch (error) {
+      console.error(error);
+      toast({
+        title: "please enter valid credentials",
+        position: "top",
+        status: "error",
+        isClosable: true,
+      });
+    }
   };
 
   return (
