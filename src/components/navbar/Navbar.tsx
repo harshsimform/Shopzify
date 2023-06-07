@@ -18,9 +18,12 @@ import ColorMode from "../../colorMode/ColorMode";
 import SecondaryNavbar from "../secondaryNavbar/SecondaryNavbar";
 import { NavLink } from "react-router-dom";
 import Logout from "../pages/authentication/Logout";
+import { useAppSelector } from "../../redux/store";
+import { selectIsLoggedIn } from "../../redux/authSliceRedux/authSlice";
 
 const Navbar = () => {
   const { isOpen, onToggle } = useDisclosure();
+  const isUserLoggedIn = useAppSelector(selectIsLoggedIn);
 
   // Determine if the navbar should be fixed based on the breakpoint
   const isNavbarFixed = useBreakpointValue({ base: false, md: true });
@@ -84,20 +87,23 @@ const Navbar = () => {
           spacing={3}
         >
           <ColorMode />
-          <NavLink to="/signup">
-            <Button
-              fontSize={"sm"}
-              fontWeight={600}
-              color={"white"}
-              bg={"teal.400"}
-              _hover={{
-                bg: "teal.300",
-              }}
-            >
-              Sign Up
-            </Button>
-          </NavLink>
-          <Logout />
+          {isUserLoggedIn ? (
+            <Logout />
+          ) : (
+            <NavLink to="/signup">
+              <Button
+                fontSize={"sm"}
+                fontWeight={600}
+                color={"white"}
+                bg={"teal.400"}
+                _hover={{
+                  bg: "teal.300",
+                }}
+              >
+                Sign Up
+              </Button>
+            </NavLink>
+          )}
         </Stack>
       </Flex>
 
