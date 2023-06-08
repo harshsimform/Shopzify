@@ -6,6 +6,7 @@ import {
   SignupCredentials,
   RefreshResponse,
   RefreshCredentials,
+  ProductFormValues,
 } from "../../interfaces/interface";
 import { RootState } from "../store";
 
@@ -33,6 +34,13 @@ export const api = createApi({
     }),
     searchProducts: builder.query<ProductResponse, string>({
       query: (searchTerm) => `/product/search/${searchTerm}`,
+    }),
+    addToWishlist: builder.mutation<void, { product: ProductFormValues }>({
+      query: ({ product }) => ({
+        url: `/user-wishlist/wishlist/toggle`,
+        method: "POST",
+        body: { product },
+      }),
     }),
     login: builder.mutation<LoginResponse, LoginCredentials>({
       query: (credentials) => ({
@@ -67,6 +75,7 @@ export const api = createApi({
 export const {
   useGetProductDataQuery,
   useSearchProductsQuery,
+  useAddToWishlistMutation,
   useLoginMutation,
   useSignupMutation,
   useRefreshMutation,
