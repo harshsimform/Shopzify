@@ -1,3 +1,17 @@
+export interface Props {
+  control?: string;
+  label?: string;
+  name: string;
+  placeholder?: string;
+  options?: { key: string; value: string }[];
+  type?: string;
+  className?: string;
+}
+
+export interface TextErrorProps {
+  children?: React.ReactNode;
+}
+
 export interface NavItem {
   label: string;
   subLabel?: string;

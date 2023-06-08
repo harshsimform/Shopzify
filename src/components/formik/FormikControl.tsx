@@ -2,7 +2,7 @@ import React from "react";
 import Input from "./Input";
 import TextArea from "./TextArea";
 import Select from "./Select";
-import { Props } from "../../interface/interface";
+import { Props } from "../../interfaces/interface";
 
 const FormikControl: React.FC<Props> = ({ control, ...rest }) => {
   switch (control) {

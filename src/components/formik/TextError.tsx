@@ -1,5 +1,5 @@
 import { Text } from "@chakra-ui/react";
-import { TextErrorProps } from "../../interface/interface";
+import { TextErrorProps } from "../../interfaces/interface";
 
 const TextError = (props: TextErrorProps) => {
   return (

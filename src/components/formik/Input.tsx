@@ -1,8 +1,8 @@
 import { Input as ChakraInput, FormLabel, Box } from "@chakra-ui/react";
 import { ErrorMessage } from "formik";
 import TextError from "./TextError";
-import { Props } from "../../interface/interface";
 import { Field } from "formik";
+import { Props } from "../../interfaces/interface";
 
 const Input = (props: Props) => {
   const { label, name, ...rest } = props;

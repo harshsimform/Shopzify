@@ -1,7 +1,7 @@
 import { Field, ErrorMessage } from "formik";
 import TextError from "./TextError";
-import { Props } from "../../interface/interface";
 import { Box, FormLabel, Select as ChakraSelect } from "@chakra-ui/react";
+import { Props } from "../../interfaces/interface";
 
 const Select = (props: Props) => {
   const { label, name, options, ...rest } = props;

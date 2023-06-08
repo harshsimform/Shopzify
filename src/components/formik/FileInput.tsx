@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import { ErrorMessage, useField } from "formik";
 import TextError from "./TextError";
-import { Props } from "../../interface/interface";
 import { Box, FormLabel } from "@chakra-ui/react";
+import { Props } from "../../interfaces/interface";
 
 const FileInput = ({ label, name }: Props) => {
   const [field, meta, helpers] = useField(name);

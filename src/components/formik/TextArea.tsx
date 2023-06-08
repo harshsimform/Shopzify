@@ -1,8 +1,8 @@
 import React from "react";
 import { Field, ErrorMessage } from "formik";
 import TextError from "./TextError";
-import { Props } from "../../interface/interface";
 import { Box, FormLabel, Textarea } from "@chakra-ui/react";
+import { Props } from "../../interfaces/interface";
 
 const TextArea = (props: Props) => {
   const { label, name, ...rest } = props;
