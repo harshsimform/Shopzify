@@ -7,26 +7,26 @@ import {
 } from "@chakra-ui/react";
 import React, { useState } from "react";
 import { SearchIcon } from "@chakra-ui/icons";
-import { ProductFormValues } from "../../interfaces/interface";
 import { useSearchProductsQuery } from "../../redux/apiSliceRedux/apiSlice";
 import { Navigate, useNavigate } from "react-router-dom";
+import SearchedProducts from "./SearchedProducts";
+import { ProductFormValues } from "../../interfaces/interface";
 
 const SearchProduct = () => {
   const inputBg = useColorModeValue("none", "gray.600");
   const inputColor = useColorModeValue("black", "white");
   const [searchInput, setSearchInput] = useState<string>("");
-  const [searchProducts, setSearchProducts] = useState<
-    ProductFormValues[] | unknown
-  >();
 
   const navigate = useNavigate();
 
-  const { data, isLoading, isError } = useSearchProductsQuery(searchInput);
+  const { data } = useSearchProductsQuery(searchInput);
 
   const handleSearch = () => {
-    console.log(data);
-    setSearchProducts(data);
-    navigate("/search-products");
+    if (data) {
+      navigate("/search-products", { state: { data } });
+    } else {
+      navigate("/search-products", { state: { data: [] } });
+    }
   };
 
   return (

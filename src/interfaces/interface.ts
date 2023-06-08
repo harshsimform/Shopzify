@@ -42,25 +42,22 @@ export type UserLoginAuthFormValues = Pick<
 
 export interface AuthState {
   isLoggedIn: boolean;
+  accessToken: string;
 }
 
 // interfaces for authentication API responses
 export interface LoginResponse {
-  // Example:
-  token: string;
+  accessToken: string;
   // userId: string;
-  // ...
 }
 
 export interface RefreshResponse {
   token: string;
-  // ...
 }
 
 export interface LoginCredentials {
   email: string;
   password: string;
-  // ...
 }
 
 export interface SignupCredentials {
@@ -68,7 +65,6 @@ export interface SignupCredentials {
   email: string;
   phone: string;
   password: string;
-  // ...
 }
 
 export interface RefreshCredentials {

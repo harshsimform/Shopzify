@@ -13,7 +13,12 @@ import {
 import { useNavigate } from "react-router-dom";
 import { FaHeart, FaRegHeart } from "react-icons/fa";
 import { useGetProductDataQuery } from "../../redux/apiSliceRedux/apiSlice";
-import { ProductFormValues } from "../../interfaces/interface";
+import { ProductFormValues, ProductResponse } from "../../interfaces/interface";
+import { useLocation } from "react-router-dom";
+
+interface searchedProducts {
+  data: ProductFormValues;
+}
 
 const SearchedProducts = () => {
   const cardBorderColor = useColorModeValue("gray.200", "gray.600");
@@ -23,8 +28,9 @@ const SearchedProducts = () => {
   const isScreenFixed = useBreakpointValue({ base: false, md: true });
   const toast = useToast();
 
-  const [wishlistItems, setWishlistItems] = useState<string[]>([]);
-  const { data: productData, isLoading, isError } = useGetProductDataQuery();
+  const { state } = useLocation();
+  const productDetails = state?.data as ProductFormValues[];
+  //   console.log(productDetails);
 
   const navigate = useNavigate();
 
@@ -36,16 +42,8 @@ const SearchedProducts = () => {
     });
   };
 
-  useEffect(() => {
-    const storedWishlistItems = localStorage.getItem("wishlistItems");
-    const initialWishlistItems = storedWishlistItems
-      ? JSON.parse(storedWishlistItems)
-      : [];
-    setWishlistItems(initialWishlistItems);
-    if (storedWishlistItems) {
-      setWishlistItems(JSON.parse(storedWishlistItems));
-    }
-  }, []);
+  const [wishlistItems, setWishlistItems] = useState<string[]>([]);
+  const { data: productData, isLoading, isError } = useGetProductDataQuery();
 
   const [likedProductId, setLikedProductId] = useState<string>("");
   const handleToggleWishlist = (productId: string) => {
@@ -67,20 +65,24 @@ const SearchedProducts = () => {
         duration: 1500,
         isClosable: true,
       });
+    } else {
+      toast({
+        title: "Product added in your wishlist",
+        status: "success",
+        position: "top",
+        duration: 1500,
+        isClosable: true,
+      });
     }
   };
 
   if (isLoading) {
-    return <Box marginX={4}>Loading...</Box>;
+    return <Center marginX={4}>Loading...</Center>;
   }
 
   if (isError) {
-    return <Box marginX={4}>Error fetching wishlist items</Box>;
+    return <Center marginX={4}>Error fetching searched items</Center>;
   }
-
-  const wishlistProducts = productData?.productDetails.filter(
-    (product: ProductFormValues) => wishlistItems.includes(product._id)
-  );
 
   return (
     <>
@@ -96,25 +98,8 @@ const SearchedProducts = () => {
             Your Search result includes
           </Text>
         </Center>
-        {wishlistProducts?.length === 0 ? (
-          <Center flexDirection="column" mt={8}>
-            <Text fontSize="lg" fontWeight="bold">
-              You have no items in your Wishlist.
-            </Text>
-            <Flex mt={1} className="items-center">
-              <Text>
-                to continue shopping.{" "}
-                <Text
-                  as="button"
-                  color="teal.500"
-                  fontWeight="600"
-                  onClick={() => navigate("/")}
-                >
-                  Click here
-                </Text>
-              </Text>
-            </Flex>
-          </Center>
+        {productDetails.length === 0 ? (
+          <Center>Please enter relevant product name or category</Center>
         ) : (
           <Flex
             justifyContent="center"
@@ -122,7 +107,7 @@ const SearchedProducts = () => {
             alignItems="left"
             mb={10}
           >
-            {wishlistProducts?.map((product: ProductFormValues) => (
+            {productDetails.map((product) => (
               <Box
                 key={product._id}
                 className="relative max-w-md rounded-3xl p-2 mt-[2rem]"

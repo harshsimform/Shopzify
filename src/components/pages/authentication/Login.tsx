@@ -43,12 +43,12 @@ const Login = () => {
 
   const onSubmit = async (values: UserLoginAuthFormValues) => {
     try {
-      await loginUser({
+      const response = await loginUser({
         email: values.email,
         password: values.password,
       }).unwrap();
       navigate("/");
-      dispatch(setLoggedIn());
+      dispatch(setLoggedIn(response.accessToken));
       toast({
         title: "You have successfully logged in",
         position: "top",

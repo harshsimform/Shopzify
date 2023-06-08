@@ -7,6 +7,7 @@ import {
   RefreshResponse,
   RefreshCredentials,
 } from "../../interfaces/interface";
+import { RootState } from "../store";
 
 const environment = import.meta.env;
 
@@ -15,9 +16,13 @@ export const api = createApi({
   baseQuery: fetchBaseQuery({
     baseUrl: environment.VITE_API_BASE_URL,
     credentials: "include",
-    prepareHeaders: (headers) => {
-      headers.set("Content-type", "application/json");
-      headers.set("Accept", "application/json");
+    prepareHeaders: (headers, { getState }) => {
+      const token = (getState() as RootState).auth.accessToken;
+      if (token) {
+        headers.set("Content-type", "application/json");
+        headers.set("Accept", "application/json");
+        headers.set("authorization", `Bearer ${token}`);
+      }
       return headers;
     },
   }),

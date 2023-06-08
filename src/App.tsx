@@ -28,17 +28,18 @@ const LazySearchedProducts = lazy(
   () => import("./components/secondaryNavbar/SearchedProducts")
 );
 
-// const ProtectedRoute = ({
-//   component: Component,
-// }: {
-//   component: JSX.Element;
-// }) => {
-//   const isLoggedIn = useAppSelector(selectIsLoggedIn);
+const ProtectedRoute = ({
+  component: Component,
+}: {
+  component: JSX.Element;
+}) => {
+  const isLoggedIn = useAppSelector(selectIsLoggedIn);
+  console.log(isLoggedIn);
 
-//   return isLoggedIn ? <Navigate to="/" /> : Component;
-// };
+  return isLoggedIn ? <Navigate to="/" /> : Component;
+};
 
-const routes = createBrowserRouter([
+const mainRoutes = [
   {
     path: "/",
     element: (
@@ -76,22 +77,6 @@ const routes = createBrowserRouter([
         ),
       },
       {
-        path: "/login",
-        element: (
-          <Suspense fallback={<LazySuspense />}>
-            <LazyLogin />
-          </Suspense>
-        ),
-      },
-      {
-        path: "/signup",
-        element: (
-          <Suspense fallback={<LazySuspense />}>
-            <LazySignup />
-          </Suspense>
-        ),
-      },
-      {
         path: "/search-products",
         element: (
           <Suspense fallback={<LazySuspense />}>
@@ -109,12 +94,29 @@ const routes = createBrowserRouter([
       // },
     ],
   },
-]);
+];
+
+const authRoutes = [
+  {
+    path: "/login",
+    element: <ProtectedRoute component={<LazyLogin />} />,
+  },
+  {
+    path: "/signup",
+    element: (
+      <Suspense fallback={<LazySuspense />}>
+        <LazySignup />
+      </Suspense>
+    ),
+  },
+];
+
+const router = createBrowserRouter([...mainRoutes, ...authRoutes]);
 
 const App = () => {
   return (
     <>
-      <RouterProvider router={routes} />
+      <RouterProvider router={router} />
     </>
   );
 };
