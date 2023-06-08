@@ -34,23 +34,28 @@ const ProtectedRoute = ({
   component: JSX.Element;
 }) => {
   const isLoggedIn = useAppSelector(selectIsLoggedIn);
-  console.log(isLoggedIn);
 
   return isLoggedIn ? <Navigate to="/" /> : Component;
+};
+
+const ProtectedRouteTwo = ({
+  component: Component,
+}: {
+  component: JSX.Element;
+}) => {
+  const isLoggedIn = useAppSelector(selectIsLoggedIn);
+
+  return isLoggedIn ? Component : <Navigate to="/login" />;
 };
 
 const mainRoutes = [
   {
     path: "/",
-    element: (
-      <Suspense fallback={<LazySuspense />}>
-        <LazyRoot />
-      </Suspense>
-    ),
+    element: <ProtectedRouteTwo component={<LazyRoot />} />,
     children: [
       {
         path: "/",
-        element: <LazyHome />,
+        element: <ProtectedRouteTwo component={<LazyHome />} />,
       },
       {
         path: "/products/:id",
@@ -84,14 +89,6 @@ const mainRoutes = [
           </Suspense>
         ),
       },
-      // {
-      //   path: "/login",
-      //   element: <ProtectedRoute component={<LazyLogin />} />,
-      // },
-      // {
-      //   path: "/signup",
-      //   element: <ProtectedRoute component={<LazySignup />} />,
-      // },
     ],
   },
 ];
@@ -100,14 +97,20 @@ const authRoutes = [
   {
     path: "/login",
     element: <ProtectedRoute component={<LazyLogin />} />,
+    // element: (
+    //   <Suspense fallback={<LazySuspense />}>
+    //     <LazyLogin />
+    //   </Suspense>
+    // ),
   },
   {
     path: "/signup",
-    element: (
-      <Suspense fallback={<LazySuspense />}>
-        <LazySignup />
-      </Suspense>
-    ),
+    element: <ProtectedRoute component={<LazySignup />} />,
+    // element: (
+    //   <Suspense fallback={<LazySuspense />}>
+    //     <LazySignup />
+    //   </Suspense>
+    // ),
   },
 ];
 
