@@ -12,11 +12,17 @@ export interface TextErrorProps {
   children?: React.ReactNode;
 }
 
+export interface SubNavItem {
+  label: string;
+  subLabel?: string;
+  to: string;
+}
+
 export interface NavItem {
   label: string;
   subLabel?: string;
-  children?: Array<NavItem>;
-  href?: string;
+  children?: Array<SubNavItem>;
+  to?: string;
 }
 
 export interface BannerItem {
@@ -83,4 +89,29 @@ export interface SignupCredentials {
 
 export interface RefreshCredentials {
   refreshToken: string;
+}
+
+export interface WishlistProduct {
+  _id: string;
+  product: string;
+  category: string;
+  description: string;
+  discountedPrice: string;
+  displaySection: string;
+  gender: string;
+  image: string;
+  name: string;
+  originalPrice: string;
+  quantity: string;
+  recordDate: Date;
+}
+
+export interface Wishlist {
+  _id: string;
+  userId: string;
+  products: WishlistProduct[];
+}
+
+export interface wishlistRecord {
+  wishlist: Wishlist;
 }

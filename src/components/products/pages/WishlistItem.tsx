@@ -9,7 +9,10 @@ import {
   useColorModeValue,
   useToast,
 } from "@chakra-ui/react";
-import { useGetProductDataQuery } from "../../../redux/apiSliceRedux/apiSlice";
+import {
+  useGetProductDataQuery,
+  useGetWishlistsQuery,
+} from "../../../redux/apiSliceRedux/apiSlice";
 import { ProductFormValues } from "../../../interfaces/interface";
 import { useNavigate } from "react-router-dom";
 import { FaHeart, FaRegHeart } from "react-icons/fa";
@@ -22,11 +25,13 @@ const WishlistItem = () => {
   const isScreenFixed = useBreakpointValue({ base: false, md: true });
   const toast = useToast();
 
+  const { data: wishlistData } = useGetWishlistsQuery();
+  console.log(wishlistData?.wishlist.products);
+
   const [wishlistItems, setWishlistItems] = useState<string[]>([]);
   const { data: productData, isLoading, isError } = useGetProductDataQuery();
 
   const navigate = useNavigate();
-
   const handleProductClick = (product: ProductFormValues) => {
     navigate(`/products/${product._id}`, { state: { product } });
     window.scrollTo({
@@ -95,7 +100,7 @@ const WishlistItem = () => {
             Your Wishlist Products
           </Text>
         </Center>
-        {wishlistProducts?.length === 0 ? (
+        {wishlistData?.wishlist.products.length === 0 ? (
           <Center flexDirection="column" mt={8}>
             <Text fontSize="lg" fontWeight="bold">
               You have no items in your Wishlist.
@@ -121,9 +126,9 @@ const WishlistItem = () => {
             alignItems="left"
             mb={10}
           >
-            {wishlistProducts?.map((product: ProductFormValues) => (
+            {wishlistData?.wishlist.products.map((wishlist) => (
               <Box
-                key={product._id}
+                key={wishlist._id}
                 className="relative max-w-md rounded-3xl p-2 mt-[2rem]"
                 border={1}
                 borderStyle="solid"
@@ -134,11 +139,11 @@ const WishlistItem = () => {
                 <div
                   className="overflow-x-hidden rounded-2xl relative cursor-pointer"
                   style={{ userSelect: "none" }}
-                  onClick={() => handleProductClick(product)}
+                  onClick={() => handleProductClick(wishlist)}
                 >
                   <img
                     className="h-[15rem] w-[20rem] rounded-2xl object-cover"
-                    src={product.image}
+                    src={wishlist.image}
                   />
                   <Box className="absolute left-2 top-1 rounded-full">
                     <Badge
@@ -159,32 +164,32 @@ const WishlistItem = () => {
                       className="text-lg font-semibold text-teal-500 mb-0 text-left"
                       style={{ userSelect: "none" }}
                     >
-                      {product.name}
+                      {wishlist.name}
                     </p>
                     <div
                       className="flex items-center"
                       style={{ userSelect: "none" }}
                     >
                       <Text className="text-lg mt-0" color={priceTextColor}>
-                        Rs. {Number(product.discountedPrice).toLocaleString()}
+                        Rs. {Number(wishlist.discountedPrice).toLocaleString()}
                       </Text>
                       <Text
                         className="text-md mt-0 ml-2 line-through"
                         color={dummyPriceTextColor}
                       >
-                        Rs. {Number(product.originalPrice).toLocaleString()}
+                        Rs. {Number(wishlist.originalPrice).toLocaleString()}
                       </Text>
                     </div>
                   </div>
                   <Flex
                     onClick={() => {
-                      handleToggleWishlist(product._id);
+                      handleToggleWishlist(wishlist._id);
                     }}
                     className={`heart-button flex flex-col-reverse mb-1 mr-4 group cursor-pointer ${
-                      wishlistItems.includes(product._id) ? "is-active" : ""
+                      wishlistItems.includes(wishlist._id) ? "is-active" : ""
                     }`}
                   >
-                    {wishlistItems.includes(product._id) ? (
+                    {wishlistItems.includes(wishlist._id) ? (
                       <FaHeart fill="teal" fontSize={"20px"} />
                     ) : (
                       <FaRegHeart fontSize={"20px"} fill="gray" />

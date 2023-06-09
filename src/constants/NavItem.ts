@@ -7,22 +7,22 @@ export const NAV_ITEMS: Array<NavItem> = [
       {
         label: "Topwear",
         subLabel: "Trending Design to inspire you",
-        href: "#",
+        to: "",
       },
       {
         label: "Bottomwear",
         subLabel: "Up-and-coming Designers",
-        href: "#",
+        to: "",
       },
       {
         label: "Footwear",
         subLabel: "Up-and-coming Designers",
-        href: "#",
+        to: "",
       },
       {
         label: "Fashion Accessories",
         subLabel: "Up-and-coming Designers",
-        href: "#",
+        to: "",
       },
     ],
   },
@@ -32,28 +32,28 @@ export const NAV_ITEMS: Array<NavItem> = [
       {
         label: "Indian Wear",
         subLabel: "Trending Design to inspire you",
-        href: "#",
+        to: "",
       },
       {
         label: "Watches & Wearables",
         subLabel: "Up-and-coming Designers",
-        href: "#",
+        to: "",
       },
       {
         label: "Footwear",
         subLabel: "Up-and-coming Designers",
-        href: "#",
+        to: "",
       },
       {
         label: "Jewelry",
         subLabel: "Up-and-coming Designers",
-        href: "#",
+        to: "",
       },
     ],
   },
   {
     label: "ELECTRONICS",
-    href: "#",
+    to: "",
   },
   {
     label: "BEAUTY",
@@ -61,22 +61,22 @@ export const NAV_ITEMS: Array<NavItem> = [
       {
         label: "Makeup",
         subLabel: "Trending Design to inspire you",
-        href: "#",
+        to: "",
       },
       {
         label: "Haircare",
         subLabel: "Up-and-coming Designers",
-        href: "#",
+        to: "",
       },
       {
         label: "Fragrances",
         subLabel: "Up-and-coming Designers",
-        href: "#",
+        to: "",
       },
       {
         label: "Appliances",
         subLabel: "Up-and-coming Designers",
-        href: "#",
+        to: "",
       },
     ],
   },
@@ -86,7 +86,7 @@ export const NAV_ITEMS: Array<NavItem> = [
       {
         label: "Home & Living",
         subLabel: "Discover Your Perfect Home Décor",
-        href: "#",
+        to: "",
       },
     ],
   },

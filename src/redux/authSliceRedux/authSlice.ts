@@ -1,7 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { AuthState } from "../../interfaces/interface";
-import { RootState, useAppSelector } from "../store";
-import { string } from "yup";
+import { RootState } from "../store";
 
 const initialState: AuthState = {
   isLoggedIn: false,

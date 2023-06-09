@@ -7,6 +7,7 @@ import {
   RefreshResponse,
   RefreshCredentials,
   ProductFormValues,
+  wishlistRecord,
 } from "../../interfaces/interface";
 import { RootState } from "../store";
 
@@ -42,6 +43,9 @@ export const api = createApi({
         body: { product },
       }),
     }),
+    getWishlists: builder.query<wishlistRecord, void>({
+      query: () => "/user-wishlist/wishlists",
+    }),
     login: builder.mutation<LoginResponse, LoginCredentials>({
       query: (credentials) => ({
         url: "/auth/login",
@@ -76,6 +80,7 @@ export const {
   useGetProductDataQuery,
   useSearchProductsQuery,
   useAddToWishlistMutation,
+  useGetWishlistsQuery,
   useLoginMutation,
   useSignupMutation,
   useRefreshMutation,

@@ -1,9 +1,4 @@
-import {
-  combineReducers,
-  configureStore,
-  createStore,
-  getDefaultMiddleware,
-} from "@reduxjs/toolkit";
+import { combineReducers, configureStore } from "@reduxjs/toolkit";
 import { setupListeners } from "@reduxjs/toolkit/query/react";
 import { TypedUseSelectorHook, useDispatch, useSelector } from "react-redux";
 import { api } from "./apiSliceRedux/apiSlice";
@@ -18,7 +13,6 @@ import {
   REGISTER,
 } from "redux-persist";
 import storage from "redux-persist/lib/storage";
-import persistStore from "redux-persist/es/persistStore";
 
 const persistConfig = {
   key: "root",
