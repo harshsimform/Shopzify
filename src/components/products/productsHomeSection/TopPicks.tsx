@@ -18,7 +18,11 @@ import { useNavigate } from "react-router-dom";
 import { FaHeart, FaRegHeart } from "react-icons/fa";
 import { useState, useEffect } from "react";
 import "../utils/WishlistHeartAnimation.css";
-import { useAddToWishlistMutation } from "../../../redux/apiSliceRedux/apiSlice";
+import {
+  useAddToWishlistMutation,
+  useGetWishlistsQuery,
+} from "../../../redux/apiSliceRedux/apiSlice";
+import { useAppDispatch } from "../../../redux/store";
 
 const SliderButtons = () => {
   const swiper = useSwiper();
@@ -41,13 +45,17 @@ const TopPicks = () => {
   const dummyPriceTextColor = useColorModeValue("gray.400", "gray.500");
   const toast = useToast();
   const navigate = useNavigate();
+  const dispatch = useAppDispatch();
 
-  const { data, isLoading, isError } = useGetProductDataQuery();
+  const { data: productData, isLoading, isError } = useGetProductDataQuery();
+  const { data: wishlistData } = useGetWishlistsQuery();
   const [wishlistItems, setWishlistItems] = useState<ProductFormValues[]>([]);
 
-  const TopPicksProducts = data?.productDetails.filter(
+  const TopPicksProducts = productData?.productDetails.filter(
     (product) => product.displaySection === "top picks"
   );
+  console.log(wishlistData);
+  console.log(TopPicksProducts);
 
   const [addToWishlist, { isLoading: isAddingToWishlist }] =
     useAddToWishlistMutation();
@@ -58,6 +66,7 @@ const TopPicks = () => {
     )
       ? wishlistItems.filter((item) => item._id !== product._id)
       : [...wishlistItems, product];
+
     setWishlistItems(updatedWishlistItems);
 
     addToWishlist({ product })
@@ -96,6 +105,12 @@ const TopPicks = () => {
   const handleProductClick = (product: ProductFormValues) => {
     navigate(`/products/${product._id}`, { state: { product } });
   };
+
+  useEffect(() => {
+    if (wishlistData) {
+      setWishlistItems(wishlistData.wishlist.products);
+    }
+  }, [wishlistData]);
 
   if (isLoading) {
     return <Box marginX={4}>Loading...</Box>;
@@ -168,14 +183,18 @@ const TopPicks = () => {
                       </div>
                     </div>
                     <Flex
-                      onClick={() => {
-                        handleToggleWishlist(obj);
-                      }}
+                      onClick={() => handleToggleWishlist(obj)}
                       className={`heart-button flex flex-col-reverse mt-[1.8rem] mr-4 group cursor-pointer h-5 ${
-                        wishlistItems.includes(obj) ? "is-active" : ""
+                        wishlistData?.wishlist.products.some(
+                          (item) => item._id === obj._id
+                        )
+                          ? "is-active"
+                          : ""
                       }`}
                     >
-                      {wishlistItems.includes(obj) ? (
+                      {wishlistData?.wishlist.products.some(
+                        (item) => item._id === obj._id
+                      ) ? (
                         <FaHeart fill="teal" fontSize={"20px"} />
                       ) : (
                         <FaRegHeart fontSize={"20px"} fill="gray" />

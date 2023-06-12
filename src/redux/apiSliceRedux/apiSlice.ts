@@ -7,7 +7,9 @@ import {
   RefreshResponse,
   RefreshCredentials,
   ProductFormValues,
-  wishlistRecord,
+  WishlistRecord,
+  WishlistProduct,
+  CartRecord,
 } from "../../interfaces/interface";
 import { RootState } from "../store";
 
@@ -28,7 +30,7 @@ export const api = createApi({
       return headers;
     },
   }),
-
+  tagTypes: ["Wishlist", "Cart"],
   endpoints: (builder) => ({
     getProductData: builder.query<ProductResponse, void>({
       query: () => "/product",
@@ -42,9 +44,31 @@ export const api = createApi({
         method: "POST",
         body: { product },
       }),
+      invalidatesTags: ["Wishlist"],
     }),
-    getWishlists: builder.query<wishlistRecord, void>({
+    getWishlists: builder.query<WishlistRecord, void>({
       query: () => "/user-wishlist/wishlists",
+      providesTags: ["Wishlist"],
+    }),
+    addToCart: builder.mutation<void, { product: ProductFormValues }>({
+      query: ({ product }) => ({
+        url: "/user-cart/post/cart",
+        method: "POST",
+        body: { product },
+      }),
+      invalidatesTags: ["Cart"],
+    }),
+    removeFromCart: builder.mutation<void, { product: ProductFormValues }>({
+      query: ({ product }) => ({
+        url: "/user-cart/remove/cart",
+        method: "POST",
+        body: { product },
+      }),
+      invalidatesTags: ["Cart"],
+    }),
+    getCartProducts: builder.query<CartRecord, void>({
+      query: () => "/user-cart/carts",
+      providesTags: ["Cart"],
     }),
     login: builder.mutation<LoginResponse, LoginCredentials>({
       query: (credentials) => ({
@@ -81,6 +105,9 @@ export const {
   useSearchProductsQuery,
   useAddToWishlistMutation,
   useGetWishlistsQuery,
+  useGetCartProductsQuery,
+  useAddToCartMutation,
+  useRemoveFromCartMutation,
   useLoginMutation,
   useSignupMutation,
   useRefreshMutation,

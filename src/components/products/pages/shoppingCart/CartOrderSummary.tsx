@@ -36,14 +36,9 @@ export const CartOrderSummary = () => {
       <Heading size="md">Order Summary</Heading>
 
       <Stack spacing="6">
-        <OrderSummaryItem label="Subtotal" value="₹ 597" />
+        <OrderSummaryItem label="Subtotal">{formatPrice(577)}</OrderSummaryItem>
         <OrderSummaryItem label="Shipping + Tax">
-          <Link href="#">₹ 20.00</Link>
-        </OrderSummaryItem>
-        <OrderSummaryItem label="Coupon Code">
-          <Link href="#" textDecor="underline">
-            Add coupon
-          </Link>
+          <Link href="#">{formatPrice(20)}</Link>
         </OrderSummaryItem>
         <Flex justify="space-between">
           <Text fontSize="lg" fontWeight="semibold">

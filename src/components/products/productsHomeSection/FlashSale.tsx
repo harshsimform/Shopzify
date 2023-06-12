@@ -43,6 +43,7 @@ const FlashSale = () => {
   const navigate = useNavigate();
 
   const { data, isLoading, isError } = useGetProductDataQuery();
+
   const [wishlistItems, setWishlistItems] = useState<ProductFormValues[]>([]);
 
   const TopPicksProducts = data?.productDetails.filter(

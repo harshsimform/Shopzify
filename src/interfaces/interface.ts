@@ -32,7 +32,7 @@ export interface BannerItem {
 
 export interface ProductFormValues {
   _id: string;
-  image: string | undefined;
+  image: string;
   name: string;
   discountedPrice: string;
   originalPrice: string;
@@ -112,6 +112,10 @@ export interface Wishlist {
   products: WishlistProduct[];
 }
 
-export interface wishlistRecord {
+export interface WishlistRecord {
   wishlist: Wishlist;
+}
+
+export interface CartRecord {
+  cart: Wishlist;
 }
