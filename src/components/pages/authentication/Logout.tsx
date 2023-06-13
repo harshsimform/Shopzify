@@ -2,8 +2,8 @@ import { Button } from "@chakra-ui/react";
 import React from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import { setLoggedOut } from "../../../redux/authSliceRedux/authSlice";
-import { useAppDispatch } from "../../../redux/store";
-import { useLogoutMutation } from "../../../redux/apiSliceRedux/apiSlice";
+import { store, useAppDispatch } from "../../../redux/store";
+import { api, useLogoutMutation } from "../../../redux/apiSliceRedux/apiSlice";
 
 const Logout = () => {
   const dispatch = useAppDispatch();
@@ -13,6 +13,7 @@ const Logout = () => {
     try {
       await logoutUser();
       dispatch(setLoggedOut());
+      store.dispatch(api.util.resetApiState());
       navigate("/login");
     } catch (error) {
       console.log(error);

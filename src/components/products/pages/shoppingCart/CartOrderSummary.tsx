@@ -31,6 +31,7 @@ const OrderSummaryItem = (props: OrderSummaryItemProps) => {
 
 export const CartOrderSummary = () => {
   const buttonBgColor = useColorModeValue("teal.600", "teal.500");
+
   return (
     <Stack spacing="8" borderWidth="1px" rounded="lg" padding="8" width="full">
       <Heading size="md">Order Summary</Heading>
