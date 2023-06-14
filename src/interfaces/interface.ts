@@ -117,6 +117,36 @@ export interface WishlistRecord {
   wishlist: Wishlist;
 }
 
+export interface AddToCartProduct {
+  _id: string;
+  image: string;
+  name: string;
+  discountedPrice: string;
+  productId?: string;
+  originalPrice: string;
+  description: string;
+  gender: string;
+  category: string;
+  cartQty?: number;
+  onClickDelete?: () => void;
+}
+
+export interface Cart {
+  _id: string;
+  userId: string;
+  products: AddToCartProduct[];
+}
+
 export interface CartRecord {
   cart: Wishlist;
+}
+
+export interface CartProducts {
+  image: string;
+  name: string;
+  discountedPrice: string;
+  productId: string;
+  cartQty: number;
+  category: string;
+  onClickDelete?: () => void;
 }

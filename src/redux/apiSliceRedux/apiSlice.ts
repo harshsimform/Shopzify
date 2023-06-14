@@ -10,6 +10,7 @@ import {
   WishlistRecord,
   WishlistProduct,
   CartRecord,
+  AddToCartProduct,
 } from "../../interfaces/interface";
 import { RootState } from "../store";
 
@@ -53,7 +54,7 @@ export const api = createApi({
       query: () => "/user-wishlist/wishlists",
       providesTags: ["Wishlist"],
     }),
-    addToCart: builder.mutation<void, { product: ProductFormValues }>({
+    addToCart: builder.mutation<void, { product: AddToCartProduct }>({
       query: ({ product }) => ({
         url: "/user-cart/post/cart",
         method: "POST",
@@ -61,7 +62,7 @@ export const api = createApi({
       }),
       invalidatesTags: ["Cart"],
     }),
-    removeFromCart: builder.mutation<void, { product: ProductFormValues }>({
+    removeFromCart: builder.mutation<void, { product: AddToCartProduct }>({
       query: ({ product }) => ({
         url: "/user-cart/remove/cart",
         method: "POST",

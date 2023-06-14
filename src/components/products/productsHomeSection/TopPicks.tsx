@@ -48,14 +48,12 @@ const TopPicks = () => {
   const { data: productData, isLoading, isError } = useGetProductDataQuery();
   const { data: wishlistData } = useGetWishlistsQuery();
   const [wishlistItems, setWishlistItems] = useState<ProductFormValues[]>([]);
-  console.log(wishlistData);
 
   const TopPicksProducts = productData?.productDetails.filter(
     (product) => product.displaySection === "top picks"
   );
 
-  const [addToWishlist, { isLoading: isAddingToWishlist }] =
-    useAddToWishlistMutation();
+  const [addToWishlist] = useAddToWishlistMutation();
 
   const handleToggleWishlist = (product: ProductFormValues) => {
     const updatedWishlistItems = wishlistItems.some(

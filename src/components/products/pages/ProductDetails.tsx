@@ -18,14 +18,13 @@ import {
 } from "@chakra-ui/react";
 import { FaShoppingCart } from "react-icons/fa";
 import { MdLocalShipping } from "react-icons/md";
-import { ProductFormValues } from "../../../interfaces/interface";
-import { useLocation, useNavigate } from "react-router-dom";
-import { useEffect } from "react";
 import {
-  useAddToCartMutation,
-  useRemoveFromCartMutation,
-  useGetCartProductsQuery,
-} from "../../../redux/apiSliceRedux/apiSlice";
+  AddToCartProduct,
+  ProductFormValues,
+} from "../../../interfaces/interface";
+import { useLocation } from "react-router-dom";
+import { useEffect } from "react";
+import { useAddToCartMutation } from "../../../redux/apiSliceRedux/apiSlice";
 
 const ProductDetails = () => {
   const { state } = useLocation();
@@ -37,22 +36,46 @@ const ProductDetails = () => {
   const titleTextColor = useColorModeValue("teal.400", "teal.500");
   const buttonBgColor = useColorModeValue("teal.600", "teal.500");
 
-  const [addToCart, { isLoading: addToCartLoading }] = useAddToCartMutation();
-  const [removeFromCart, { isLoading: removeFromCartLoading }] =
-    useRemoveFromCartMutation();
+  const [addToCart] = useAddToCartMutation();
   const toast = useToast();
 
-  const handleAddToCart = async (product: ProductFormValues) => {
+  const handleAddToCart = async (product: AddToCartProduct) => {
+    const {
+      _id,
+      image,
+      name,
+      discountedPrice,
+      originalPrice,
+      description,
+      gender,
+      productId = "",
+      category,
+    } = product;
+    const productData = {
+      _id,
+      image,
+      name,
+      discountedPrice,
+      originalPrice,
+      productId,
+      description,
+      gender,
+      category,
+      cartQty: 1,
+    };
     try {
-      await addToCart({ product });
-      toast({
-        title: "Product added to your cart",
-        status: "success",
-        position: "top",
-        duration: 2000,
-        isClosable: true,
-      });
-      console.log(`Product added to cart:`, product);
+      await addToCart({ product: productData })
+        .unwrap()
+        .then((response: any) => {
+          const message = response?.message || "Something went wrong";
+          toast({
+            title: message,
+            status: "success",
+            position: "top",
+            duration: 2000,
+            isClosable: true,
+          });
+        });
     } catch (error) {
       toast({
         title: "Error",
@@ -63,39 +86,6 @@ const ProductDetails = () => {
         isClosable: true,
       });
     }
-  };
-
-  const handleRemoveFromCart = async (product: ProductFormValues) => {
-    try {
-      await removeFromCart({ product });
-      toast({
-        title: "Product removed from your cart",
-        status: "success",
-        position: "top",
-        duration: 2000,
-        isClosable: true,
-      });
-    } catch (error) {
-      toast({
-        title: "Error",
-        description: "Something went wrong",
-        status: "error",
-        position: "top",
-        duration: 2000,
-        isClosable: true,
-      });
-    }
-  };
-
-  const navigate = useNavigate();
-  const { data: cartProducts, refetch } = useGetCartProductsQuery();
-
-  const isProductAddedToCart = (productId: string) => {
-    if (cartProducts) {
-      return cartProducts.cart.products.some((item) => item._id === productId);
-    }
-
-    return false;
   };
 
   useEffect(() => {
@@ -300,40 +290,7 @@ const ProductDetails = () => {
                 }}
               >
                 <FaShoppingCart />
-                <Text ml={2}>
-                  {addToCartLoading ? (
-                    "Adding to Cart"
-                  ) : isProductAddedToCart(productData._id) ? (
-                    <>
-                      Go to Cart
-                      <Box as="span" ml={2} fontWeight="normal">
-                        ({cartProducts?.cart.products.length})
-                      </Box>
-                    </>
-                  ) : (
-                    "Add to Cart"
-                  )}
-                </Text>
-              </Button>
-
-              <Button
-                rounded={"md"}
-                w={"full"}
-                mt={4}
-                size={"lg"}
-                py={"7"}
-                colorScheme="red"
-                bg={"red.500"}
-                color={"white"}
-                textTransform={"uppercase"}
-                onClick={() => handleRemoveFromCart(productData)}
-                _hover={{
-                  transform: "translateY(2px)",
-                  boxShadow: "lg",
-                }}
-              >
-                <FaShoppingCart />
-                <Text ml={2}>Remove from Cart</Text>
+                <Text ml={2}>Add to Cart</Text>
               </Button>
 
               <Stack
