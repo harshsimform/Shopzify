@@ -1,52 +1,4 @@
-// import React, { useState } from "react";
-// import { Box, Button } from "@chakra-ui/react";
-
-// const CustomNumberInput: React.FC = () => {
-//   const [quantity, setQuantity] = useState(1);
-
-//   const handleIncrement = () => {
-//     if (quantity < 10) {
-//       setQuantity(quantity + 1);
-//     }
-//   };
-
-//   const handleDecrement = () => {
-//     if (quantity > 1) {
-//       setQuantity(quantity - 1);
-//     }
-//   };
-
-//   return (
-//     <Box className="custom-number-input rounded-md w-32" borderWidth="1px">
-//       <div className="flex flex-row h-10 w-full relative bg-transparent">
-//         <Button
-//           data-action="decrement"
-//           onClick={handleDecrement}
-//           className="bg-gray-100 h-full w-10 cursor-pointer outline-none"
-//         >
-//           <span className="m-auto text-2xl font-thin">−</span>
-//         </Button>
-//         <input
-//           type="number"
-//           className="focus:outline-none bg-transparent text-center w-full font-semibold text-md md:text-base cursor-default flex items-center outline-none"
-//           name="custom-input-number"
-//           value={quantity}
-//           readOnly
-//         />
-//         <Button
-//           data-action="increment"
-//           onClick={handleIncrement}
-//           className="bg-gray-100 h-full w-10 cursor-pointer"
-//         >
-//           <span className="m-auto text-2xl font-thin">+</span>
-//         </Button>
-//       </div>
-//     </Box>
-//   );
-// };
-
-// export default CustomNumberInput;
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { updateCartItemQuantity } from "../../../../redux/checkoutSliceRedux/checkoutSlice";
 import { Box, Button } from "@chakra-ui/react";
 import { useAppDispatch } from "../../../../redux/store";
@@ -54,30 +6,39 @@ import { useAppDispatch } from "../../../../redux/store";
 interface CustomNumberInputProps {
   productId: string;
   quantity: number;
+  onQuantityChange: (newQuantity: number) => void;
 }
 
 const CustomNumberInput: React.FC<CustomNumberInputProps> = ({
   productId,
   quantity,
+  onQuantityChange,
 }) => {
   const dispatch = useAppDispatch();
+  const [localQuantity, setLocalQuantity] = useState(quantity);
+
+  useEffect(() => {
+    setLocalQuantity(quantity);
+  }, [quantity]);
 
   const handleQuantityChange = (newQuantity: number) => {
-    dispatch(updateCartItemQuantity({ productId, quantity: newQuantity }));
+    // dispatch(updateCartItemQuantity({ productId, quantity: newQuantity }));
+    onQuantityChange(newQuantity);
   };
-  console.log(quantity);
 
   const handleIncrement = () => {
-    if (quantity < 10) {
-      handleQuantityChange(quantity + 1);
-      console.log("m m");
+    if (localQuantity < 10) {
+      const newQuantity = localQuantity + 1;
+      setLocalQuantity(newQuantity);
+      handleQuantityChange(newQuantity);
     }
   };
 
   const handleDecrement = () => {
-    if (quantity > 1) {
-      handleQuantityChange(quantity - 1);
-      console.log("m m");
+    if (localQuantity > 1) {
+      const newQuantity = localQuantity - 1;
+      setLocalQuantity(newQuantity);
+      handleQuantityChange(newQuantity);
     }
   };
 
@@ -95,7 +56,7 @@ const CustomNumberInput: React.FC<CustomNumberInputProps> = ({
           type="number"
           className="focus:outline-none bg-transparent text-center w-full font-semibold text-md md:text-base cursor-default flex items-center outline-none"
           name="custom-input-number"
-          value={quantity}
+          value={localQuantity}
           readOnly
         />
         <Button

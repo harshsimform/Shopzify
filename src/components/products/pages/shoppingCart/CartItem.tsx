@@ -2,17 +2,37 @@ import { CloseButton, Flex, HStack, Link, Text } from "@chakra-ui/react";
 import { CartProductMeta } from "./CartProductMeta";
 import { CartProducts } from "../../../../interfaces/interface";
 import CustomNumberInput from "./CustomNumberInput";
+import { useState } from "react";
+import { updateCartItemQuantity } from "../../../../redux/checkoutSliceRedux/checkoutSlice";
+import { useAppDispatch } from "../../../../redux/store";
 
-export const CartItem = (props: CartProducts) => {
+const CartItem = (props: CartProducts) => {
   const {
     image,
-    name,
     discountedPrice,
+    name,
     productId,
     cartQty,
     category,
     onClickDelete,
   } = props;
+
+  const dispatch = useAppDispatch();
+
+  const [quantity, setQuantity] = useState(cartQty);
+
+  const handleQuantityChange = (newQuantity: number) => {
+    setQuantity(newQuantity);
+    console.log(quantity);
+    const price = parseInt(discountedPrice) * newQuantity;
+    console.log(price);
+
+    dispatch(
+      updateCartItemQuantity({ productId, quantity: newQuantity, price })
+    );
+  };
+
+  const totalPrice = parseInt(discountedPrice) * quantity;
 
   return (
     <Flex
@@ -30,9 +50,18 @@ export const CartItem = (props: CartProducts) => {
         justify="space-between"
         display={{ base: "none", md: "flex" }}
       >
-        <CustomNumberInput productId={productId} quantity={cartQty} />
+        <CustomNumberInput
+          productId={productId}
+          quantity={quantity}
+          onQuantityChange={handleQuantityChange}
+        />
         <HStack spacing="2">
-          <Text>₹{discountedPrice}</Text>
+          <Text>
+            {totalPrice.toLocaleString("en-US", {
+              style: "currency",
+              currency: "INR",
+            })}
+          </Text>
         </HStack>
         <CloseButton aria-label="remove-product" onClick={onClickDelete} />
       </Flex>
@@ -49,9 +78,20 @@ export const CartItem = (props: CartProducts) => {
         <Link fontSize="sm" textDecor="underline" onClick={onClickDelete}>
           Delete
         </Link>
-        <CustomNumberInput productId={productId} quantity={cartQty} />
-        <Text>₹{discountedPrice}</Text>
+        <CustomNumberInput
+          productId={productId}
+          quantity={quantity}
+          onQuantityChange={handleQuantityChange}
+        />
+        <Text>
+          {totalPrice.toLocaleString("en-US", {
+            style: "currency",
+            currency: "INR",
+          })}
+        </Text>
       </Flex>
     </Flex>
   );
 };
+
+export default CartItem;

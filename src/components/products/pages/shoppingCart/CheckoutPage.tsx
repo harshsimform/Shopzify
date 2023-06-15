@@ -8,13 +8,12 @@ import {
   useColorModeValue as mode,
   useToast,
 } from "@chakra-ui/react";
-import { CartItem } from "./CartItem";
+import CartItem from "./CartItem";
 import { CartOrderSummary } from "./CartOrderSummary";
 import {
   useGetCartProductsQuery,
   useRemoveFromCartMutation,
 } from "../../../../redux/apiSliceRedux/apiSlice";
-import { NavLink } from "react-router-dom";
 
 const CheckoutPage = () => {
   const { data: cartData } = useGetCartProductsQuery();
@@ -77,6 +76,7 @@ const CheckoutPage = () => {
               {cartData?.cart.products.map((item) => (
                 <CartItem
                   key={item._id}
+                  cartQty={parseInt(item.quantity)}
                   {...item}
                   onClickDelete={() => handleRemoveFromCart(item.productId)}
                 />
@@ -86,14 +86,6 @@ const CheckoutPage = () => {
 
           <Flex direction="column" align="center" flex="1">
             <CartOrderSummary />
-            <HStack mt="6" fontWeight="semibold">
-              <p>or</p>
-              <NavLink to="/">
-                <Text color={mode("teal.500", "teal.400")}>
-                  Continue shopping
-                </Text>
-              </NavLink>
-            </HStack>
           </Flex>
         </Stack>
       </Box>
