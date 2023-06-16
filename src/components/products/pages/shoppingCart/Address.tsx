@@ -15,10 +15,12 @@ import { FormControl, FormLabel } from "@chakra-ui/form-control";
 import { Input } from "@chakra-ui/input";
 import { Select } from "@chakra-ui/select";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const Address = () => {
   const isScreenFixed = useBreakpointValue({ base: false, md: true });
   const submitMenuBgColor = useColorModeValue("teal.400", "teal.600");
+  const navigate = useNavigate();
 
   const [shippingInfo, setShippingInfo] = useState({
     firstName: "",
@@ -43,11 +45,12 @@ const Address = () => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    navigate("/payment");
     console.log("Form submitted:", shippingInfo);
   };
 
   return (
-    <Box marginX={4} marginTop={isScreenFixed ? "10rem" : "0"}>
+    <Box marginX={4} marginTop={isScreenFixed ? "8.3rem" : "0"}>
       <Center>
         <Text
           fontWeight="bold"
@@ -154,6 +157,7 @@ const Address = () => {
                     />
                   </FormControl>
                 </VStack>
+
                 <Button
                   type="submit"
                   colorScheme="teal"

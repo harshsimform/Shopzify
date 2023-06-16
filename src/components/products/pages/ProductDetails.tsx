@@ -25,10 +25,14 @@ import {
 import { useLocation } from "react-router-dom";
 import { useEffect } from "react";
 import { useAddToCartMutation } from "../../../redux/apiSliceRedux/apiSlice";
+import { useAppDispatch } from "../../../redux/store";
+import { addCart } from "../../../redux/checkoutSliceRedux/checkoutSlice";
 
 const ProductDetails = () => {
   const { state } = useLocation();
   const productData: ProductFormValues = state?.product;
+
+  const dispatch = useAppDispatch();
 
   const isScreenFixed = useBreakpointValue({ base: false, md: true });
 
@@ -40,31 +44,14 @@ const ProductDetails = () => {
   const toast = useToast();
 
   const handleAddToCart = async (product: AddToCartProduct) => {
-    const {
-      _id,
-      image,
-      name,
-      discountedPrice,
-      originalPrice,
-      description,
-      gender,
-      productId = "",
-      category,
-    } = product;
-    const productData = {
-      _id,
-      image,
-      name,
-      discountedPrice,
-      originalPrice,
-      productId,
-      description,
-      gender,
-      category,
-      cartQty: 1,
+    const { _id, discountedPrice } = product;
+    const cartProduct = {
+      productId: _id,
+      quantity: 1,
+      price: discountedPrice,
     };
     try {
-      await addToCart({ product: productData })
+      await addToCart({ product })
         .unwrap()
         .then((response: any) => {
           const message = response?.message || "Something went wrong";
@@ -75,6 +62,9 @@ const ProductDetails = () => {
             duration: 2000,
             isClosable: true,
           });
+
+          // Dispatch the addCart action from the checkoutSlice
+          dispatch(addCart(cartProduct));
         });
     } catch (error) {
       toast({
@@ -157,7 +147,7 @@ const ProductDetails = () => {
                   <Text color={textColor} fontSize={"2xl"} fontWeight={"300"}>
                     {productData.description}
                   </Text>
-                  <Text fontSize={"lg"} color={textColor}>
+                  <Text fontSize={"lg"} color={textColor} textAlign="justify">
                     Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ad
                     aliquid amet at delectus doloribus dolorum expedita hic,
                     ipsum maxime modi nam officiis porro, quae, quisquam quos
