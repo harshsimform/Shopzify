@@ -5,6 +5,7 @@ import {
   Button,
   Center,
   Flex,
+  Heading,
   Text,
   useBreakpointValue,
   useColorModeValue,
@@ -91,16 +92,9 @@ const WishlistItem = () => {
     <>
       <Box marginX={4} marginTop={isScreenFixed ? "8.3rem" : "0"}>
         <Center>
-          <Text
-            fontWeight="bold"
-            fontSize="3xl"
-            my={2}
-            mt={"2.5rem"}
-            textAlign="center"
-            color={"teal"}
-          >
+          <Heading my={2} mt={"2.5rem"} textAlign="center" color={"teal"}>
             Your Wishlist Products
-          </Text>
+          </Heading>
         </Center>
         {wishlistItems.length === 0 ? (
           <Center flexDirection="column" mt={8}>
