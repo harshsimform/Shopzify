@@ -9,6 +9,7 @@ import {
   Text,
   useBreakpointValue,
   useColorModeValue as mode,
+  useToast,
   VStack,
 } from "@chakra-ui/react";
 import { FormControl, FormLabel } from "@chakra-ui/form-control";
@@ -16,11 +17,23 @@ import { Input } from "@chakra-ui/input";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import CartSummary from "./CartSummary";
+import { useCreateCheckoutMutation } from "../../../../redux/apiSliceRedux/apiSlice";
+import { useAppDispatch, useAppSelector } from "../../../../redux/store";
+import {
+  resetCheckout,
+  selectCheckout,
+} from "../../../../redux/checkoutSliceRedux/checkoutSlice";
 
 const Payment = () => {
   const isScreenFixed = useBreakpointValue({ base: false, md: true });
   const submitMenuBgColor = mode("teal.400", "teal.600");
+  const [createCheckout] = useCreateCheckoutMutation();
   const navigate = useNavigate();
+  const toast = useToast();
+
+  const checkoutData = useAppSelector(selectCheckout);
+  const { cartItems, summary, address } = checkoutData;
+  const dispatch = useAppDispatch();
 
   const [paymentInfo, setPaymentInfo] = useState({
     cardName: "",
@@ -39,10 +52,38 @@ const Payment = () => {
     }));
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log("Form submitted:", paymentInfo);
-    navigate("/success");
+    const paymentData = {
+      cartItems,
+      summary,
+      address,
+      payment: paymentInfo,
+    };
+    try {
+      await createCheckout(paymentData)
+        .unwrap()
+        .then((response: any) => {
+          const message = response.message || "Something went wrong";
+          toast({
+            title: message,
+            position: "top",
+            status: "success",
+            duration: 3000,
+            isClosable: true,
+          });
+          navigate("/success");
+          dispatch(resetCheckout());
+        });
+    } catch (err) {
+      toast({
+        title: "Error",
+        description: "Something went wrong. Please try again.",
+        status: "error",
+        duration: 3000,
+        isClosable: true,
+      });
+    }
   };
 
   return (

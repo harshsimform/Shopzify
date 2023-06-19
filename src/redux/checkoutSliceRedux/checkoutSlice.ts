@@ -1,6 +1,10 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { RootState } from "../store";
-import { CheckoutState, CartProduct } from "../../interfaces/interface";
+import {
+  CheckoutState,
+  CartProduct,
+  AddressDetails,
+} from "../../interfaces/interface";
 
 interface Summary {
   totalMrp: number;
@@ -16,6 +20,16 @@ const initialState: CheckoutState = {
     taxCharge: 0,
     shippingCharge: 0,
     totalAmount: 0,
+  },
+  address: {
+    firstName: "",
+    lastName: "",
+    address: "",
+    city: "",
+    country: "",
+    postalCode: "",
+    email: "",
+    phone: "",
   },
 };
 
@@ -87,6 +101,9 @@ const checkoutSlice = createSlice({
       state.cartItems = action.payload;
       state.summary = calculateSummary(state.cartItems);
     },
+    updateAddress: (state, action: PayloadAction<AddressDetails>) => {
+      state.address = action.payload;
+    },
     resetCheckout: () => initialState,
   },
 });
@@ -96,6 +113,7 @@ export const {
   removeCart,
   updateCartItemQuantity,
   updateCartItems,
+  updateAddress,
   resetCheckout,
 } = checkoutSlice.actions;
 

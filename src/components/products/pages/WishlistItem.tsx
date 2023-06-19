@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import {
   Badge,
   Box,
-  Button,
   Center,
   Flex,
   Heading,
@@ -17,11 +16,8 @@ import {
   useGetWishlistsQuery,
 } from "../../../redux/apiSliceRedux/apiSlice";
 import { useNavigate } from "react-router-dom";
-import { FaHeart, FaRegHeart, FaTimes } from "react-icons/fa";
-import {
-  ProductFormValues,
-  WishlistProduct,
-} from "../../../interfaces/interface";
+import { FaHeart } from "react-icons/fa";
+import { WishlistProduct } from "../../../interfaces/interface";
 
 const WishlistItem = () => {
   const cardBorderColor = useColorModeValue("gray.200", "gray.600");

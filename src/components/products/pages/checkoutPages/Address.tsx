@@ -10,22 +10,21 @@ import {
   useBreakpointValue,
   useColorModeValue as mode,
   VStack,
-  useToast,
 } from "@chakra-ui/react";
 import { FormControl, FormLabel } from "@chakra-ui/form-control";
 import { Input } from "@chakra-ui/input";
 import { Select } from "@chakra-ui/select";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useAddAddressMutation } from "../../../../redux/apiSliceRedux/apiSlice";
 import CartSummary from "./CartSummary";
+import { useAppDispatch } from "../../../../redux/store";
+import { updateAddress } from "../../../../redux/checkoutSliceRedux/checkoutSlice";
 
 const Address = () => {
   const isScreenFixed = useBreakpointValue({ base: false, md: true });
   const submitMenuBgColor = mode("teal.400", "teal.600");
-  const [addAddress] = useAddAddressMutation();
   const navigate = useNavigate();
-  const toast = useToast();
+  const dispatch = useAppDispatch();
 
   const [shippingInfo, setShippingInfo] = useState({
     firstName: "",
@@ -50,29 +49,9 @@ const Address = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    try {
-      await addAddress(shippingInfo)
-        .unwrap()
-        .then((response: any) => {
-          const message = response.message || "Something wen wrong";
-          toast({
-            title: message,
-            position: "top",
-            status: "success",
-            duration: 3000,
-            isClosable: true,
-          });
-          navigate("/payment");
-        });
-    } catch (error) {
-      toast({
-        title: "Error",
-        description: "Something went wrong. Please try again.",
-        status: "error",
-        duration: 3000,
-        isClosable: true,
-      });
-    }
+    console.log("Form Submitted:", shippingInfo);
+    dispatch(updateAddress(shippingInfo));
+    navigate("/payment");
   };
 
   return (

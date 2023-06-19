@@ -6,7 +6,6 @@ import {
   Text,
   useColorModeValue as mode,
 } from "@chakra-ui/react";
-import React from "react";
 import {
   selectQuantity,
   selectSummary,
@@ -28,7 +27,7 @@ const CartSummary = () => {
           display="flex"
           alignItems="center"
         >
-          <Image src={item.image} boxSize={20} mr={2} borderRadius={4} />
+          <Image src={item.image} boxSize={100} mr={2} borderRadius={4} />
           <Box>
             <Text
               fontSize="md"

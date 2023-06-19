@@ -176,6 +176,16 @@ export interface CheckoutState {
     shippingCharge: number;
     totalAmount: number;
   };
+  address: {
+    firstName: string;
+    lastName: string;
+    address: string;
+    city: string;
+    country: string;
+    postalCode: string;
+    email: string;
+    phone: string;
+  };
 }
 
 export interface AddressDetails {

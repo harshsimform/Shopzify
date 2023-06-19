@@ -1,4 +1,11 @@
-import { CloseButton, Flex, HStack, Link, Text } from "@chakra-ui/react";
+import {
+  CloseButton,
+  Flex,
+  HStack,
+  Link,
+  Text,
+  useColorModeValue as mode,
+} from "@chakra-ui/react";
 import { CartProductMeta } from "./CartProductMeta";
 import { CartProducts } from "../../../../interfaces/interface";
 import CustomNumberInput from "./CustomNumberInput";
@@ -73,7 +80,12 @@ const CartItem = (props: CartProducts) => {
             })}
           </Text>
         </HStack>
-        <CloseButton aria-label="remove-product" onClick={onClickDelete} />
+        <CloseButton
+          aria-label="remove-product"
+          bgColor={mode("gray.100", "gray.700")}
+          onClick={onClickDelete}
+          mt={"-2.4rem"}
+        />
       </Flex>
 
       {/* Mobile */}
