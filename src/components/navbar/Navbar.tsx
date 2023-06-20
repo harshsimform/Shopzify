@@ -3,9 +3,13 @@ import {
   Flex,
   Text,
   IconButton,
-  Button,
   Stack,
   Collapse,
+  Button,
+  Menu,
+  MenuButton,
+  MenuList,
+  MenuItem,
   useColorModeValue,
   useBreakpointValue,
   useDisclosure,
@@ -16,17 +20,38 @@ import DesktopNav from "./DesktopNav";
 import { AiFillShop } from "react-icons/ai";
 import ColorMode from "../../colorMode/ColorMode";
 import SecondaryNavbar from "../secondaryNavbar/SecondaryNavbar";
-import { NavLink } from "react-router-dom";
-import Logout from "../pages/authentication/Logout";
-import { useAppSelector } from "../../redux/store";
-import { selectIsLoggedIn } from "../../redux/authSliceRedux/authSlice";
+import { NavLink, useNavigate } from "react-router-dom";
+import { store, useAppDispatch, useAppSelector } from "../../redux/store";
+import {
+  selectIsLoggedIn,
+  setLoggedOut,
+} from "../../redux/authSliceRedux/authSlice";
+import { FaUser } from "react-icons/fa";
+import { api, useLogoutMutation } from "../../redux/apiSliceRedux/apiSlice";
+import { resetCheckout } from "../../redux/checkoutSliceRedux/checkoutSlice";
 
 const Navbar = () => {
   const { isOpen, onToggle } = useDisclosure();
-  const isUserLoggedIn = useAppSelector(selectIsLoggedIn);
+  const textColor = useColorModeValue("gray.600", "gray.200");
 
   // Determine if the navbar should be fixed based on the breakpoint
   const isNavbarFixed = useBreakpointValue({ base: false, md: true });
+
+  const dispatch = useAppDispatch();
+  const isLoggedIn = useAppSelector(selectIsLoggedIn);
+  const [logoutUser] = useLogoutMutation();
+  const navigate = useNavigate();
+  const logoutHandle = async () => {
+    try {
+      await logoutUser();
+      dispatch(setLoggedOut());
+      dispatch(resetCheckout());
+      store.dispatch(api.util.resetApiState());
+      navigate("/login");
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   return (
     <Box
@@ -84,26 +109,48 @@ const Navbar = () => {
           flex={{ base: 1, md: 0 }}
           justify={"flex-end"}
           direction={"row"}
-          spacing={3}
+          mr={"0.6rem"}
+          // spacing={3}
         >
           <ColorMode />
-          {isUserLoggedIn ? (
-            <Logout />
-          ) : (
-            <NavLink to="/signup">
-              <Button
-                fontSize={"sm"}
-                fontWeight={600}
-                color={"white"}
-                bg={"teal.400"}
-                _hover={{
-                  bg: "teal.300",
-                }}
-              >
-                Sign Up
-              </Button>
-            </NavLink>
-          )}
+
+          <Menu>
+            <MenuButton
+              boxSize={10}
+              borderRadius={5}
+              aria-label="account"
+              zIndex={1}
+              color={"white"}
+              bgColor={"teal.400"}
+              _hover={{
+                bgColor: "teal.300",
+              }}
+            >
+              <FaUser className="ml-[0.7rem]" />
+            </MenuButton>
+            <MenuList color={textColor}>
+              <NavLink to="/orders">
+                <MenuItem>
+                  <Text>Orders</Text>
+                </MenuItem>
+              </NavLink>
+              {isLoggedIn ? (
+                <NavLink to="/login" onClick={logoutHandle}>
+                  <MenuItem>
+                    {" "}
+                    <Text color={textColor}>Logout</Text>
+                  </MenuItem>
+                </NavLink>
+              ) : (
+                <NavLink to="/signup">
+                  <MenuItem>
+                    {" "}
+                    <Text color={textColor}>Signup</Text>
+                  </MenuItem>
+                </NavLink>
+              )}
+            </MenuList>
+          </Menu>
         </Stack>
       </Flex>
 

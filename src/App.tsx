@@ -36,6 +36,9 @@ const LazyPayment = lazy(
 const LazyPurchaseSuccess = lazy(
   () => import("./components/products/pages/checkoutPages/PurchaseSuccess")
 );
+const LazyOrderPage = lazy(
+  () => import("./components/products/pages/orderPage/OrderPage")
+);
 
 const ProtectedRoute = ({
   component: Component,
@@ -60,11 +63,11 @@ const ProtectedRouteTwo = ({
 const mainRoutes = [
   {
     path: "/",
-    element: <ProtectedRouteTwo component={<LazyRoot />} />,
+    element: <LazyRoot />,
     children: [
       {
         path: "/",
-        element: <ProtectedRouteTwo component={<LazyHome />} />,
+        element: <LazyHome />,
       },
       {
         path: "/products/:id",
@@ -122,6 +125,14 @@ const mainRoutes = [
           </Suspense>
         ),
       },
+      {
+        path: "/orders",
+        element: (
+          <Suspense fallback={<LazySuspense />}>
+            <LazyOrderPage />
+          </Suspense>
+        ),
+      },
     ],
   },
 ];
@@ -130,20 +141,10 @@ const authRoutes = [
   {
     path: "/login",
     element: <ProtectedRoute component={<LazyLogin />} />,
-    // element: (
-    //   <Suspense fallback={<LazySuspense />}>
-    //     <LazyLogin />
-    //   </Suspense>
-    // ),
   },
   {
     path: "/signup",
     element: <ProtectedRoute component={<LazySignup />} />,
-    // element: (
-    //   <Suspense fallback={<LazySuspense />}>
-    //     <LazySignup />
-    //   </Suspense>
-    // ),
   },
 ];
 

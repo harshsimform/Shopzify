@@ -1,3 +1,5 @@
+import { string } from "yup";
+
 export interface Props {
   control?: string;
   label?: string;
@@ -10,6 +12,11 @@ export interface Props {
 
 export interface TextErrorProps {
   children?: React.ReactNode;
+}
+
+export interface IOption {
+  key: string;
+  value: string;
 }
 
 export interface SubNavItem {
@@ -151,6 +158,7 @@ export interface CartProducts {
 }
 
 export interface CartProduct {
+  _id?: string;
   productId: string;
   quantity: number;
   discountedPrice: number;
@@ -169,6 +177,8 @@ export interface CartItemProps {
 }
 
 export interface CheckoutState {
+  userId?: string;
+  recordDate?: string;
   cartItems: CartProduct[];
   summary: {
     totalMrp: number;
@@ -182,10 +192,12 @@ export interface CheckoutState {
     address: string;
     city: string;
     country: string;
+    state: string;
     postalCode: string;
     email: string;
     phone: string;
   };
+  payment?: cardDetails[];
 }
 
 export interface AddressDetails {
@@ -196,7 +208,40 @@ export interface AddressDetails {
   address: string;
   city: string;
   country: string;
+  state: string;
   postalCode: string;
   email: string;
   phone: string;
+}
+
+export interface cardDetails {
+  cardName: string;
+  cardNumber: string;
+  expirationDate: string;
+  cvv: string;
+}
+
+export interface GetCheckoutData {
+  _id?: string;
+  userId?: string;
+  recordDate?: string;
+  cartItems: CartProduct[];
+  summary: {
+    totalMrp: number;
+    taxCharge: number;
+    shippingCharge: number;
+    totalAmount: number;
+  }[];
+  address: {
+    firstName: string;
+    lastName: string;
+    address: string;
+    city: string;
+    country: string;
+    state: string;
+    postalCode: string;
+    email: string;
+    phone: string;
+  }[];
+  payment?: cardDetails[];
 }

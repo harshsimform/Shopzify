@@ -82,9 +82,13 @@ const CartItem = (props: CartProducts) => {
         </HStack>
         <CloseButton
           aria-label="remove-product"
-          bgColor={mode("gray.100", "gray.700")}
+          //   bgColor={mode("gray.100", "gray.700")}
           onClick={onClickDelete}
-          mt={"-2.4rem"}
+          borderRadius={"lg"}
+          mt={"-2.44rem"}
+          _hover={{
+            bgColor: mode("gray.100", "gray.700"),
+          }}
         />
       </Flex>
 

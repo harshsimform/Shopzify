@@ -10,7 +10,7 @@ import {
   WishlistRecord,
   CartRecord,
   AddToCartProduct,
-  AddressDetails,
+  GetCheckoutData,
 } from "../../interfaces/interface";
 import { RootState } from "../store";
 import { setLoggedIn, setLoggedOut } from "../authSliceRedux/authSlice";
@@ -54,7 +54,7 @@ const baseQueryWithReauth = async (args: any, api: any, extraOptions: any) => {
 const apiSlice = createApi({
   reducerPath: "api",
   baseQuery: baseQueryWithReauth,
-  tagTypes: ["Product", "Wishlist", "Cart"],
+  tagTypes: ["Product", "Wishlist", "Cart", "Checkout"],
   endpoints: (builder) => ({}),
 });
 
@@ -102,15 +102,17 @@ export const api = apiSlice.injectEndpoints({
       query: () => "/user-cart/carts",
       providesTags: ["Cart"],
     }),
-    getCheckout: builder.query({
-      query: (id) => `checkout/${id}`,
-    }),
     createCheckout: builder.mutation({
       query: (checkoutData) => ({
         url: "/user-checkout/post/checkout",
         method: "POST",
         body: checkoutData,
       }),
+      invalidatesTags: ["Checkout"],
+    }),
+    getCheckout: builder.query<GetCheckoutData[], void>({
+      query: () => "/user-checkout/get/checkout",
+      providesTags: ["Checkout"],
     }),
     login: builder.mutation<LoginResponse, LoginCredentials>({
       query: (credentials) => ({
