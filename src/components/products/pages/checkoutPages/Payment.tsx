@@ -16,7 +16,10 @@ import {
 } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
 import CartSummary from "./CartSummary";
-import { useCreateCheckoutMutation } from "../../../../redux/apiSliceRedux/apiSlice";
+import {
+  useCreateCheckoutMutation,
+  useGetCartProductsQuery,
+} from "../../../../redux/apiSliceRedux/apiSlice";
 import { useAppDispatch, useAppSelector } from "../../../../redux/store";
 import {
   resetCheckout,
@@ -24,11 +27,14 @@ import {
 } from "../../../../redux/checkoutSliceRedux/checkoutSlice";
 import { cardDetails } from "../../../../interfaces/interface";
 import FormikControl from "../../../formik/FormikControl";
+import { useRemoveAllProductsMutation } from "../../../../redux/apiSliceRedux/apiSlice";
 
 const Payment = () => {
   const isScreenFixed = useBreakpointValue({ base: false, md: true });
   const submitMenuBgColor = mode("teal.400", "teal.600");
   const [createCheckout] = useCreateCheckoutMutation();
+  const { data: cartData } = useGetCartProductsQuery();
+  const [removeAllProducts, { isLoading }] = useRemoveAllProductsMutation();
   const navigate = useNavigate();
   const toast = useToast();
 
@@ -83,12 +89,14 @@ const Payment = () => {
             isClosable: true,
           });
           navigate("/success");
+          removeAllProducts(cartData);
           dispatch(resetCheckout());
         });
     } catch (err) {
       toast({
         title: "Error",
         description: "Something went wrong. Please try again.",
+        position: "top",
         status: "error",
         duration: 3000,
         isClosable: true,

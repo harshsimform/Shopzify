@@ -146,14 +146,14 @@ const Signup = () => {
               />
               <FormikControl
                 control="input"
-                type="text"
+                type="password"
                 label="Password"
                 name="password"
                 placeholder="Enter your password"
               />
               <FormikControl
                 control="input"
-                type="text"
+                type="password"
                 label="Confirm Password"
                 name="confirmPassword"
                 placeholder="Confirm your password"

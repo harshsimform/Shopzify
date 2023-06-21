@@ -11,6 +11,7 @@ import { useAppSelector } from "./redux/store";
 const LazyRoot = lazy(() => import("./components/pages/RootComponent"));
 const LazySuspense = lazy(() => import("./components/pages/SuspenseLoading"));
 const LazyHome = lazy(() => import("./components/pages/Home"));
+const LazyPageNotFound = lazy(() => import("./components/pages/PageNotFound"));
 const LazyProductDetails = lazy(
   () => import("./components/products/pages/ProductDetails")
 );
@@ -39,6 +40,9 @@ const LazyPurchaseSuccess = lazy(
 const LazyOrderPage = lazy(
   () => import("./components/products/pages/orderPage/OrderPage")
 );
+const LazyOrderDetails = lazy(
+  () => import("./components/products/pages/orderPage/OrderDetails")
+);
 
 const ProtectedRoute = ({
   component: Component,
@@ -50,16 +54,6 @@ const ProtectedRoute = ({
   return isLoggedIn ? <Navigate to="/" /> : Component;
 };
 
-const ProtectedRouteTwo = ({
-  component: Component,
-}: {
-  component: JSX.Element;
-}) => {
-  const isLoggedIn = useAppSelector(selectIsLoggedIn);
-
-  return isLoggedIn ? Component : <Navigate to="/login" />;
-};
-
 const mainRoutes = [
   {
     path: "/",
@@ -68,6 +62,14 @@ const mainRoutes = [
       {
         path: "/",
         element: <LazyHome />,
+      },
+      {
+        path: "*",
+        element: (
+          <Suspense fallback={<LazySuspense />}>
+            <LazyPageNotFound />
+          </Suspense>
+        ),
       },
       {
         path: "/products/:id",
@@ -133,6 +135,14 @@ const mainRoutes = [
           </Suspense>
         ),
       },
+      {
+        path: "/order/:id",
+        element: (
+          <Suspense fallback={<LazySuspense />}>
+            <LazyOrderDetails />
+          </Suspense>
+        ),
+      },
     ],
   },
 ];
@@ -140,11 +150,19 @@ const mainRoutes = [
 const authRoutes = [
   {
     path: "/login",
-    element: <ProtectedRoute component={<LazyLogin />} />,
+    element: (
+      <Suspense fallback={<LazySuspense />}>
+        <ProtectedRoute component={<LazyLogin />} />
+      </Suspense>
+    ),
   },
   {
     path: "/signup",
-    element: <ProtectedRoute component={<LazySignup />} />,
+    element: (
+      <Suspense fallback={<LazySuspense />}>
+        <ProtectedRoute component={<LazySignup />} />
+      </Suspense>
+    ),
   },
 ];
 

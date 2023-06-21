@@ -224,7 +224,7 @@ export interface cardDetails {
 export interface GetCheckoutData {
   _id?: string;
   userId?: string;
-  recordDate?: string;
+  recordDate: string;
   cartItems: CartProduct[];
   summary: {
     totalMrp: number;

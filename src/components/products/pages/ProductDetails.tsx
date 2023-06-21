@@ -53,30 +53,30 @@ const ProductDetails = () => {
       name: name,
       image: image,
     };
-    try {
-      await addToCart({ product })
-        .unwrap()
-        .then((response: any) => {
-          const message = response?.message || "Something went wrong";
-          toast({
-            title: message,
-            status: "success",
-            position: "top",
-            duration: 2000,
-            isClosable: true,
-          });
-          dispatch(addCart(cartProduct));
+
+    await addToCart({ product })
+      .unwrap()
+      .then((response: any) => {
+        const message = response?.message || "Something went wrong";
+        toast({
+          title: message,
+          status: "success",
+          position: "top",
+          duration: 2000,
+          isClosable: true,
         });
-    } catch (error) {
-      toast({
-        title: "Error",
-        description: "Something went wrong",
-        status: "error",
-        position: "top",
-        duration: 2000,
-        isClosable: true,
+        dispatch(addCart(cartProduct));
+      })
+      .catch((error) => {
+        toast({
+          title: error.data.message,
+          description: error.data.subMessage,
+          status: "error",
+          position: "top",
+          duration: 2000,
+          isClosable: true,
+        });
       });
-    }
   };
 
   useEffect(() => {

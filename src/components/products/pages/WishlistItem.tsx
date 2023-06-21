@@ -56,8 +56,8 @@ const WishlistItem = () => {
       })
       .catch((error) => {
         toast({
-          title: "Error",
-          description: error.message || "Something went wrong",
+          title: error.data.message,
+          description: error.data.subMessage,
           status: "error",
           position: "top",
           duration: 2000,

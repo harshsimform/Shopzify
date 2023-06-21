@@ -39,7 +39,7 @@ const Login = () => {
   });
 
   // Use the login mutation from the RTK Query API slice
-  const [loginUser, { data, isError, isSuccess }] = useLoginMutation();
+  const [loginUser] = useLoginMutation();
 
   const onSubmit = async (values: UserLoginAuthFormValues) => {
     try {
@@ -119,12 +119,11 @@ const Login = () => {
 
               <FormikControl
                 control="input"
-                type="text"
+                type="password"
                 label="Password"
                 name="password"
                 placeholder="Enter your password"
               />
-
               <Box textAlign="left">
                 <Button
                   type="submit"

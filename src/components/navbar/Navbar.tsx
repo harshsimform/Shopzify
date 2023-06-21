@@ -142,10 +142,10 @@ const Navbar = () => {
                   </MenuItem>
                 </NavLink>
               ) : (
-                <NavLink to="/signup">
+                <NavLink to="/login">
                   <MenuItem>
                     {" "}
-                    <Text color={textColor}>Signup</Text>
+                    <Text color={textColor}>Login</Text>
                   </MenuItem>
                 </NavLink>
               )}

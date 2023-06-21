@@ -54,7 +54,7 @@ const baseQueryWithReauth = async (args: any, api: any, extraOptions: any) => {
 const apiSlice = createApi({
   reducerPath: "api",
   baseQuery: baseQueryWithReauth,
-  tagTypes: ["Product", "Wishlist", "Cart", "Checkout"],
+  tagTypes: ["Search", "Product", "Wishlist", "Cart", "Checkout"],
   endpoints: (builder) => ({}),
 });
 
@@ -64,8 +64,9 @@ export const api = apiSlice.injectEndpoints({
       query: () => "/product",
       providesTags: ["Product"],
     }),
-    searchProducts: builder.query<ProductResponse, string>({
+    searchProducts: builder.query<ProductFormValues[], string>({
       query: (searchTerm) => `/product/search/${searchTerm}`,
+      providesTags: ["Search"],
     }),
     addToWishlist: builder.mutation<
       void,
@@ -95,6 +96,13 @@ export const api = apiSlice.injectEndpoints({
         url: "/user-cart/remove/cart",
         method: "POST",
         body: { product },
+      }),
+      invalidatesTags: ["Cart"],
+    }),
+    removeAllProducts: builder.mutation({
+      query: () => ({
+        url: "/user-cart/delete/cart",
+        method: "PUT",
       }),
       invalidatesTags: ["Cart"],
     }),
@@ -152,6 +160,7 @@ export const {
   useGetCartProductsQuery,
   useAddToCartMutation,
   useRemoveFromCartMutation,
+  useRemoveAllProductsMutation,
   useGetCheckoutQuery,
   useCreateCheckoutMutation,
   useLoginMutation,

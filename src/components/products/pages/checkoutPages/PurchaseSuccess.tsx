@@ -8,6 +8,7 @@ import {
   useColorModeValue,
   useBreakpointValue,
   Flex,
+  HStack,
 } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
 import SuccessIcon from "/success/animation-success.gif";
@@ -46,14 +47,14 @@ const PurchaseSuccess: React.FC = () => {
           </Text>
           <Button
             colorScheme="teal"
-            onClick={() => navigate("/")}
+            onClick={() => navigate("/orders")}
             color="white"
             bgColor={useColorModeValue("teal.400", "teal.500")}
             _hover={{
               bgColor: "teal.500",
             }}
           >
-            Continue Shopping
+            See Order Details
           </Button>
         </VStack>
       </Box>
