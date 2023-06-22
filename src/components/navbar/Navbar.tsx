@@ -5,7 +5,6 @@ import {
   IconButton,
   Stack,
   Collapse,
-  Button,
   Menu,
   MenuButton,
   MenuList,
@@ -105,13 +104,7 @@ const Navbar = () => {
           </Flex>
         </Flex>
 
-        <Stack
-          flex={{ base: 1, md: 0 }}
-          justify={"flex-end"}
-          direction={"row"}
-          mr={"0.6rem"}
-          // spacing={3}
-        >
+        <Stack flex={{ base: 1, md: 0 }} justify={"flex-end"} direction={"row"}>
           <ColorMode />
 
           <Menu>
@@ -119,14 +112,13 @@ const Navbar = () => {
               boxSize={10}
               borderRadius={5}
               aria-label="account"
-              zIndex={1}
               color={"white"}
               bgColor={"teal.400"}
               _hover={{
                 bgColor: "teal.300",
               }}
             >
-              <FaUser className="ml-[0.7rem]" />
+              <FaUser className="ml-[0.73rem]" />
             </MenuButton>
             <MenuList color={textColor}>
               <NavLink to="/orders">

@@ -38,7 +38,6 @@ const Login = () => {
       .required("Password is required"),
   });
 
-  // Use the login mutation from the RTK Query API slice
   const [loginUser] = useLoginMutation();
 
   const onSubmit = async (values: UserLoginAuthFormValues) => {

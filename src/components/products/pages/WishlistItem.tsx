@@ -195,7 +195,7 @@ const WishlistItem = () => {
                       onClick={() => handleToggleWishlist(wishlistProduct)}
                       className="heart-button flex flex-col-reverse mt-[1.8rem] mr-4 group cursor-pointer h-5"
                     >
-                      <FaHeart fill="teal" fontSize={"20px"} />
+                      <FaHeart className="text-teal-600" fontSize={"20px"} />
                     </Flex>
                   </div>
                 </Box>

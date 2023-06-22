@@ -1,5 +1,3 @@
-import { string } from "yup";
-
 export interface Props {
   control?: string;
   label?: string;

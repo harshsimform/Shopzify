@@ -184,7 +184,10 @@ const FlashSale = () => {
                         }`}
                       >
                         {isWishlisted ? (
-                          <FaHeart fill="teal" fontSize={"20px"} />
+                          <FaHeart
+                            className="text-teal-600"
+                            fontSize={"20px"}
+                          />
                         ) : (
                           <FaRegHeart fontSize={"20px"} fill="gray" />
                         )}
