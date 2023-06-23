@@ -1,4 +1,4 @@
-import { Text, useColorModeValue } from "@chakra-ui/react";
+import { Box, Heading, Text, useColorModeValue } from "@chakra-ui/react";
 import { ReactNode } from "react";
 import { NavLink } from "react-router-dom";
 
@@ -14,7 +14,7 @@ const StyledNavLink = ({
 
   return (
     <NavLink to={to}>
-      <Text
+      <Box
         color={linkColor}
         _hover={{
           textDecoration: "none",
@@ -22,7 +22,7 @@ const StyledNavLink = ({
         }}
       >
         {children}
-      </Text>
+      </Box>
     </NavLink>
   );
 };

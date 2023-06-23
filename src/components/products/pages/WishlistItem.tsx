@@ -5,10 +5,12 @@ import {
   Center,
   Flex,
   Heading,
+  HStack,
   Text,
   useBreakpointValue,
   useColorModeValue,
   useToast,
+  VStack,
 } from "@chakra-ui/react";
 import {
   useAddToWishlistMutation,
@@ -98,13 +100,13 @@ const WishlistItem = () => {
           </Heading>
         </Center>
         {wishlistItems.length === 0 ? (
-          <Center flexDirection="column" mt={8}>
-            <Text fontSize="lg" fontWeight="bold">
-              You have no items in your Wishlist.
-            </Text>
-            <Flex mt={1} className="items-center">
-              <Text>
-                to continue shopping.{" "}
+          <Center>
+            <VStack mt={8}>
+              <Text fontSize="lg" fontWeight="bold">
+                You have no items in your Wishlist.
+              </Text>
+              <HStack>
+                <Text>to continue shopping.</Text>
                 <Text
                   as="button"
                   color="teal.500"
@@ -113,8 +115,8 @@ const WishlistItem = () => {
                 >
                   Click here
                 </Text>
-              </Text>
-            </Flex>
+              </HStack>
+            </VStack>
           </Center>
         ) : (
           <Flex
