@@ -7,6 +7,8 @@ import {
   VStack,
   useBreakpointValue,
   Heading,
+  Tag,
+  useColorModeValue,
 } from "@chakra-ui/react";
 import { useGetCheckoutQuery } from "../../../../redux/apiSliceRedux/apiSlice";
 import { Table, Thead, Tr, Th, Tbody, Td } from "@chakra-ui/react";
@@ -17,6 +19,7 @@ import { selectIsLoggedIn } from "../../../../redux/authSliceRedux/authSlice";
 
 const OrderPage = () => {
   const isScreenFixed = useBreakpointValue({ base: false, md: true });
+  const tagBg = useColorModeValue("teal.400", "teal.700");
   const { data: checkouts, isLoading } = useGetCheckoutQuery();
   const isTableResponsive = useBreakpointValue({ base: false, sm: true });
   const isLoggedIn = useAppSelector(selectIsLoggedIn);
@@ -101,15 +104,9 @@ const OrderPage = () => {
                     </Td>
 
                     <Td>
-                      <Badge
-                        rounded="md"
-                        width={"max"}
-                        colorScheme="teal"
-                        color="white"
-                        bgColor="teal.400"
-                      >
-                        <Text fontSize={"0.7rem"}>Order Received</Text>
-                      </Badge>
+                      <Tag size={"sm"} bg={tagBg} ml={2} color={"white"}>
+                        Order Received
+                      </Tag>
                     </Td>
                     {checkout.summary.map((item, ind) => (
                       <Td fontSize={"md"} key={ind}>
@@ -134,7 +131,7 @@ const OrderPage = () => {
               You are Not Logged in
             </Text>
             <HStack>
-              <Text>Please login to continue.</Text>
+              <Text>Please login to see your orders.</Text>
               <Text
                 as="button"
                 color="teal.500"

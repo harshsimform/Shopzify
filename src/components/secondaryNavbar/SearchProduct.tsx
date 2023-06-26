@@ -25,12 +25,11 @@ import { useAppDispatch, useAppSelector } from "../../redux/store";
 
 const SearchProduct = () => {
   const inputBorderColor = useColorModeValue("gray.200", "gray.600");
+  const kbdColor = useColorModeValue("gray.600", "gray.200");
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const isScreenFixed = useBreakpointValue({ base: false, md: true });
   const searchInput = useAppSelector(selectSearchInput);
   const dispatch = useAppDispatch();
-
-  console.log(searchInput);
 
   const navigate = useNavigate();
   const handleModalClose = () => {
@@ -59,6 +58,7 @@ const SearchProduct = () => {
   const handleSearch = () => {
     if (searchInput !== "") {
       const trimmedInput = searchInput.replace(/\s+/g, "").toLowerCase();
+
       navigate("/search-products", { state: { searchInput: trimmedInput } });
       dispatch(clearSearchInput());
       setIsModalOpen(false);
@@ -97,7 +97,7 @@ const SearchProduct = () => {
         {isScreenFixed ? (
           <InputRightElement pointerEvents="none" mr={6}>
             <Flex>
-              <Kbd>ctrl</Kbd>+<Kbd>z</Kbd>
+              <Kbd color={kbdColor}>ctrl</Kbd>+<Kbd color={kbdColor}>z</Kbd>
             </Flex>
           </InputRightElement>
         ) : (
