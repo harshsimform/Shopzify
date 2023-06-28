@@ -11,6 +11,8 @@ import {
   CartRecord,
   AddToCartProduct,
   GetCheckoutData,
+  MenuItemData,
+  SearchNavProductsResponse,
 } from "../../interfaces/interface";
 import { RootState } from "../store";
 import { setLoggedIn, setLoggedOut } from "../authSliceRedux/authSlice";
@@ -54,7 +56,7 @@ const baseQueryWithReauth = async (args: any, api: any, extraOptions: any) => {
 const apiSlice = createApi({
   reducerPath: "api",
   baseQuery: baseQueryWithReauth,
-  tagTypes: ["Search", "Product", "Wishlist", "Cart", "Checkout"],
+  tagTypes: ["Search", "Product", "Wishlist", "Cart", "Checkout", "Navbar"],
   endpoints: (builder) => ({}),
 });
 
@@ -67,6 +69,12 @@ export const api = apiSlice.injectEndpoints({
     searchProducts: builder.query<ProductFormValues[], string>({
       query: (searchTerm) => `/product/search/${searchTerm}`,
       providesTags: ["Search"],
+    }),
+    searchNavProducts: builder.query<
+      SearchNavProductsResponse,
+      { menu: string; sublabel?: string }
+    >({
+      query: ({ menu, sublabel }) => `/product/nav/${menu}/${sublabel}`,
     }),
     addToWishlist: builder.mutation<
       void,
@@ -122,6 +130,10 @@ export const api = apiSlice.injectEndpoints({
       query: () => "/user-checkout/get/checkout",
       providesTags: ["Checkout"],
     }),
+    getMenuItems: builder.query<MenuItemData[], void>({
+      query: () => "/nav-menu/menus",
+      providesTags: ["Navbar"],
+    }),
     login: builder.mutation<LoginResponse, LoginCredentials>({
       query: (credentials) => ({
         url: "/auth/login",
@@ -155,6 +167,7 @@ export const api = apiSlice.injectEndpoints({
 export const {
   useGetProductDataQuery,
   useSearchProductsQuery,
+  useSearchNavProductsQuery,
   useAddToWishlistMutation,
   useGetWishlistsQuery,
   useGetCartProductsQuery,
@@ -163,6 +176,7 @@ export const {
   useRemoveAllProductsMutation,
   useGetCheckoutQuery,
   useCreateCheckoutMutation,
+  useGetMenuItemsQuery,
   useLoginMutation,
   useSignupMutation,
   useRefreshMutation,

@@ -1,4 +1,6 @@
+import { ChevronDownIcon } from "@chakra-ui/icons";
 import {
+  Box,
   Collapse,
   Flex,
   Icon,
@@ -8,31 +10,37 @@ import {
   useColorModeValue,
   useDisclosure,
 } from "@chakra-ui/react";
-import { NavItem } from "../../interfaces/interface";
-import { ChevronDownIcon } from "@chakra-ui/icons";
 import { NavLink } from "react-router-dom";
+import { SubMenuData } from "../../interfaces/interface";
 
-const MobileNavItem = ({ label, children }: NavItem) => {
+const MobileNavItem = ({
+  subMenu,
+  menu,
+}: {
+  subMenu: SubMenuData[];
+  menu: string;
+}) => {
   const { isOpen, onToggle } = useDisclosure();
 
   return (
-    <Stack spacing={4} onClick={children && onToggle}>
+    <Stack spacing={4} onClick={subMenu && onToggle}>
       <Flex
         py={2}
-        as={Link}
         justify={"space-between"}
         align={"center"}
         _hover={{
           textDecoration: "none",
         }}
       >
-        <Text
-          fontWeight={500}
-          color={useColorModeValue("gray.600", "gray.200")}
-        >
-          {label}
-        </Text>
-        {children && (
+        <NavLink to={menu}>
+          <Text
+            fontWeight={500}
+            color={useColorModeValue("gray.600", "gray.200")}
+          >
+            {menu}
+          </Text>
+        </NavLink>
+        {subMenu.length && (
           <Icon
             as={ChevronDownIcon}
             transition={"all .25s ease-in-out"}
@@ -53,12 +61,18 @@ const MobileNavItem = ({ label, children }: NavItem) => {
           align={"start"}
           fontWeight={500}
         >
-          {children &&
-            children.map((child) => (
-              <NavLink to={child.to} key={child.label}>
-                <Text py={2}>{child.label}</Text>
-              </NavLink>
-            ))}
+          {subMenu.map((obj) => {
+            const trimmedSublabel = obj.sublabel
+              .toLocaleLowerCase()
+              .replace(/ +/g, "");
+            return (
+              <Box key={obj._id}>
+                <NavLink to={`${menu}/${trimmedSublabel}`}>
+                  <Text py={2}>{obj.sublabel}</Text>
+                </NavLink>
+              </Box>
+            );
+          })}
         </Stack>
       </Collapse>
     </Stack>
