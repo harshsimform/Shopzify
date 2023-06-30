@@ -16,6 +16,7 @@ import { useNavigate } from "react-router-dom";
 import { GetCheckoutData } from "../../../../interfaces/interface";
 import { useAppSelector } from "../../../../redux/store";
 import { selectIsLoggedIn } from "../../../../redux/authSliceRedux/authSlice";
+import { statusColors } from "../../../../constants/OrderSteps";
 
 const OrderPage = () => {
   const isScreenFixed = useBreakpointValue({ base: false, md: true });
@@ -104,8 +105,13 @@ const OrderPage = () => {
                     </Td>
 
                     <Td>
-                      <Tag size={"sm"} bg={tagBg} ml={2} color={"white"}>
-                        Order Received
+                      <Tag
+                        size={"sm"}
+                        bg={statusColors[checkout.status]}
+                        ml={2}
+                        color={"white"}
+                      >
+                        {checkout.status}
                       </Tag>
                     </Td>
                     {checkout.summary.map((item, ind) => (

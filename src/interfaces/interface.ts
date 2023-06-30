@@ -225,6 +225,7 @@ export interface GetCheckoutData {
   _id?: string;
   userId?: string;
   recordDate: string;
+  status: string;
   cartItems: CartProduct[];
   summary: {
     totalMrp: number;
