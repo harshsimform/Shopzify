@@ -6,10 +6,9 @@ import {
   Stack,
   useColorModeValue,
 } from "@chakra-ui/react";
-import { DesktopSubNavProps, ProductData } from "../../interfaces/interface";
+import { DesktopSubNavProps } from "../../interfaces/interface";
 import { ChevronRightIcon } from "@chakra-ui/icons";
-import { NavLink } from "react-router-dom";
-import { useSearchNavProductsQuery } from "../../redux/apiSliceRedux/apiSlice";
+import { NavLink, useNavigate } from "react-router-dom";
 
 const DesktopSubNav = ({
   parentMenu,
@@ -18,14 +17,10 @@ const DesktopSubNav = ({
 }: DesktopSubNavProps) => {
   const trimmedSublabel = sublabel.toLocaleLowerCase().replace(/ +/g, "");
 
-  const { data: searchData } = useSearchNavProductsQuery({
-    menu: parentMenu,
-    sublabel: trimmedSublabel,
-  });
+  const navigate = useNavigate();
 
   const handleNavLinkClick = () => {
-    const products: ProductData[] | undefined = searchData?.products;
-    console.log(products);
+    navigate(`/${parentMenu}/${sublabel}`);
   };
 
   return (

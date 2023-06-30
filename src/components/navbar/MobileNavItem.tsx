@@ -40,7 +40,7 @@ const MobileNavItem = ({
             {menu}
           </Text>
         </NavLink>
-        {subMenu.length && (
+        {subMenu.length > 0 && (
           <Icon
             as={ChevronDownIcon}
             transition={"all .25s ease-in-out"}
