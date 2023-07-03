@@ -63,10 +63,10 @@ const Footer = () => {
           </Stack>
           <Stack align={"flex-start"}>
             <ListHeader>Products</ListHeader>
-            <StyledNavLink to="/men">Men</StyledNavLink>
-            <StyledNavLink to="/women">Women</StyledNavLink>
+            <StyledNavLink to="/product/men">Men</StyledNavLink>
+            <StyledNavLink to="/product/women">Women</StyledNavLink>
             <Stack direction={"row"} align={"center"} spacing={2}>
-              <StyledNavLink to="/electronics">
+              <StyledNavLink to="/product/electronics">
                 <Text
                   color={linkColor}
                   _hover={{
@@ -86,6 +86,9 @@ const Footer = () => {
                 New
               </Tag>
             </Stack>
+            <StyledNavLink to="/product/home and decor">
+              Home & Decor
+            </StyledNavLink>
           </Stack>
           <Stack align={"flex-start"}>
             <ListHeader>Follow Us</ListHeader>

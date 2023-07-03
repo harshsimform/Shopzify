@@ -1,44 +1,42 @@
-import { combineReducers, configureStore } from "@reduxjs/toolkit";
-import { setupListeners } from "@reduxjs/toolkit/query/react";
-import { TypedUseSelectorHook, useDispatch, useSelector } from "react-redux";
-import { api } from "./apiSliceRedux/apiSlice";
-import authReducer from "./authSliceRedux/authSlice";
+import { combineReducers, configureStore } from '@reduxjs/toolkit';
+import { setupListeners } from '@reduxjs/toolkit/query/react';
+import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux';
+import { api } from './apiSliceRedux/apiSlice';
+import authReducer from './authSliceRedux/authSlice';
 import {
-  persistReducer,
-  FLUSH,
-  REHYDRATE,
-  PAUSE,
-  PERSIST,
-  PURGE,
-  REGISTER,
-} from "redux-persist";
-import sessionStorage from "redux-persist/es/storage/session";
-import checkoutReducer from "./checkoutSliceRedux/checkoutSlice";
-import SearchInputSlice from "./searchInputSliceRedux/SearchInputSlice";
+	persistReducer,
+	FLUSH,
+	REHYDRATE,
+	PAUSE,
+	PERSIST,
+	PURGE,
+	REGISTER,
+} from 'redux-persist';
+import sessionStorage from 'redux-persist/es/storage/session';
+import checkoutReducer from './checkoutSliceRedux/checkoutSlice';
 
 const persistConfig = {
-  key: "root",
-  version: 1,
-  storage: sessionStorage,
+	key: 'root',
+	version: 1,
+	storage: sessionStorage,
 };
 
 const reducer = combineReducers({
-  [api.reducerPath]: api.reducer,
-  auth: authReducer.reducer,
-  checkout: checkoutReducer.reducer,
-  searchInput: SearchInputSlice.reducer,
+	[api.reducerPath]: api.reducer,
+	auth: authReducer.reducer,
+	checkout: checkoutReducer.reducer,
 });
 
 const persistedReducer = persistReducer(persistConfig, reducer);
 
 export const store = configureStore({
-  reducer: persistedReducer,
-  middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware({
-      serializableCheck: {
-        ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
-      },
-    }).concat(api.middleware),
+	reducer: persistedReducer,
+	middleware: (getDefaultMiddleware) =>
+		getDefaultMiddleware({
+			serializableCheck: {
+				ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
+			},
+		}).concat(api.middleware),
 });
 
 setupListeners(store.dispatch);

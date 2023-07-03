@@ -27,6 +27,7 @@ import { FaHeart, FaRegHeart } from 'react-icons/fa';
 import { useState, useEffect } from 'react';
 import '../utils/WishlistHeartAnimation.css';
 import { getBadgeColor } from '../../../constants/BadgeColor';
+import ProductsSkeleton from './skeleton/ProductsSkeleton';
 
 const SliderButtons = () => {
 	const swiper = useSwiper();
@@ -104,7 +105,7 @@ const TopPicks = () => {
 	}, [wishlistData]);
 
 	if (isLoading) {
-		return <Box marginX={4}>Loading...</Box>;
+		return <ProductsSkeleton />;
 	}
 
 	if (isError) {

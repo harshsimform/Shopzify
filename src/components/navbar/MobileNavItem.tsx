@@ -67,7 +67,7 @@ const MobileNavItem = ({
               .replace(/ +/g, "");
             return (
               <Box key={obj._id}>
-                <NavLink to={`${menu}/${trimmedSublabel}`}>
+                <NavLink to={`/product/${menu}/${trimmedSublabel}`}>
                   <Text py={2}>{obj.sublabel}</Text>
                 </NavLink>
               </Box>

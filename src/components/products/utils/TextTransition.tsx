@@ -17,7 +17,7 @@ const TextTransition = (props: { text: string }) => {
 			color="teal.400"
 			justifyContent="space-between"
 			position="absolute"
-			top={5}
+			top={'1.1rem'}
 			left={1}
 			right={0}
 			zIndex={2}

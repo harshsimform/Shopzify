@@ -23,7 +23,10 @@ const DesktopNav = () => {
       {navItems?.map((navItem) => (
         <Box key={navItem._id}>
           <Popover trigger={"hover"} placement={"bottom-start"}>
-            <NavLink key={navItem._id} to={`/${navItem.menu.toLowerCase()}`}>
+            <NavLink
+              key={navItem._id}
+              to={`/product/${navItem.menu.toLowerCase()}`}
+            >
               <PopoverTrigger>
                 <Text
                   p={1}

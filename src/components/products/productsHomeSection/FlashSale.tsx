@@ -24,6 +24,8 @@ import { useState, useEffect } from 'react';
 import '../utils/WishlistHeartAnimation.css';
 import { useAddToWishlistMutation } from '../../../redux/apiSliceRedux/apiSlice';
 import { getBadgeColor } from '../../../constants/BadgeColor';
+import ProductsSkeleton from './skeleton/ProductsSkeleton';
+import { calculateSavingsPercentage } from '../../customComp/CalculateSavingsPercentage';
 
 const SliderButtons = () => {
 	const swiper = useSwiper();
@@ -54,15 +56,6 @@ const FlashSale = () => {
 	const TopPicksProducts = productData?.productDetails.filter(
 		(product) => product.badge === 'sale' && product.status === true
 	);
-
-	const calculateSavingsPercentage = (
-		originalPrice: number,
-		discountedPrice: number
-	) => {
-		const savings = originalPrice - discountedPrice;
-		const savingsPercentage = (savings / originalPrice) * 100;
-		return Math.round(savingsPercentage);
-	};
 
 	const [addToWishlist, { isLoading: isAddingToWishlist }] =
 		useAddToWishlistMutation();
@@ -111,7 +104,7 @@ const FlashSale = () => {
 	}, [wishlistData]);
 
 	if (isLoading) {
-		return <Box marginX={4}>Loading...</Box>;
+		return <ProductsSkeleton />;
 	}
 
 	if (isError) {

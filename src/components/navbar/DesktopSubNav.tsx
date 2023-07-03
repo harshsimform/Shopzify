@@ -20,7 +20,7 @@ const DesktopSubNav = ({
   const navigate = useNavigate();
 
   const handleNavLinkClick = () => {
-    navigate(`/${parentMenu}/${sublabel}`);
+    navigate(`/product/${parentMenu}/${sublabel}`);
   };
 
   return (
@@ -32,7 +32,7 @@ const DesktopSubNav = ({
       _hover={{ bg: useColorModeValue("teal.50", "gray.900") }}
     >
       <NavLink
-        to={`${parentMenu}/${trimmedSublabel}`}
+        to={`/product/${parentMenu}/${trimmedSublabel}`}
         onClick={handleNavLinkClick}
       >
         <Stack direction={"row"} align={"center"}>
