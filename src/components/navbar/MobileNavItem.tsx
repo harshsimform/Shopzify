@@ -4,7 +4,6 @@ import {
   Collapse,
   Flex,
   Icon,
-  Link,
   Stack,
   Text,
   useColorModeValue,
@@ -21,6 +20,7 @@ const MobileNavItem = ({
   menu: string;
 }) => {
   const { isOpen, onToggle } = useDisclosure();
+  const stackBorderColor = useColorModeValue("gray.200", "gray.600");
 
   return (
     <Stack spacing={4} onClick={subMenu && onToggle}>
@@ -32,7 +32,7 @@ const MobileNavItem = ({
           textDecoration: "none",
         }}
       >
-        <NavLink to={menu}>
+        <NavLink to={`/product/${menu.toLocaleLowerCase()}`}>
           <Text
             fontWeight={500}
             color={useColorModeValue("gray.600", "gray.200")}
@@ -51,30 +51,36 @@ const MobileNavItem = ({
         )}
       </Flex>
 
-      <Collapse in={isOpen} animateOpacity style={{ marginTop: "0!important" }}>
-        <Stack
-          mt={2}
-          pl={4}
-          borderLeft={1}
-          borderStyle={"solid"}
-          borderColor={useColorModeValue("gray.200", "gray.600")}
-          align={"start"}
-          fontWeight={500}
+      {subMenu.length > 0 && (
+        <Collapse
+          in={isOpen}
+          animateOpacity
+          style={{ marginTop: "0!important" }}
         >
-          {subMenu.map((obj) => {
-            const trimmedSublabel = obj.sublabel
-              .toLocaleLowerCase()
-              .replace(/ +/g, "");
-            return (
-              <Box key={obj._id}>
-                <NavLink to={`/product/${menu}/${trimmedSublabel}`}>
-                  <Text py={2}>{obj.sublabel}</Text>
-                </NavLink>
-              </Box>
-            );
-          })}
-        </Stack>
-      </Collapse>
+          <Stack
+            mt={2}
+            pl={4}
+            borderLeft={1}
+            borderStyle={"solid"}
+            borderColor={stackBorderColor}
+            align={"start"}
+            fontWeight={500}
+          >
+            {subMenu.map((obj) => {
+              const trimmedSublabel = obj.sublabel
+                .toLocaleLowerCase()
+                .replace(/ +/g, "");
+              return (
+                <Box key={obj._id}>
+                  <NavLink to={`/product/${menu}/${trimmedSublabel}`}>
+                    <Text py={2}>{obj.sublabel}</Text>
+                  </NavLink>
+                </Box>
+              );
+            })}
+          </Stack>
+        </Collapse>
+      )}
     </Stack>
   );
 };
